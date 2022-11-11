@@ -1,0 +1,11 @@
+fragment CharacterData on Characters {
+  results {
+    id
+    name
+    status
+    species
+    type
+    gender
+    image
+  }
+}

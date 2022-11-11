@@ -7,11 +7,6 @@ import CHARACTERS_QUERY from "./../src/Graphql/Queries/Characters.graphql";
 import client from "../apollo-client";
 
 export default function Home() {
-  // const { data, loading, error } = useQuery(CHARACTERS_QUERY);
-  // if (error) {
-  //   return <p>:( an error happened</p>;
-  // }
-  // console.log("data: ", data);
   return (
     <div className={styles.container}>
       <Head>
@@ -83,7 +78,7 @@ export async function getStaticProps(context: any) {
   const characters = await client.query({
     query: CHARACTERS_QUERY,
   });
-  console.log(characters);
+  console.log(characters.data.characters.results);
   return {
     props: {
       characters: characters,
