@@ -21,51 +21,41 @@ export default function characterBox(): JSX.Element {
 
   return (
     <Box>
-      <Grid container spacing={5}>
-        <Grid item xs={4}>
-          <Box className="relative w-[100%] aspect-square border border-light-blue shadow-main">
-            <Image
-              src="https://rickandmortyapi.com/api/character/avatar/1.jpeg"
-              alt="img"
-              layout="fill"
-              objectFit="cover"
-            />
-          </Box>
-          <Box className="border border-light-blue shadow-main bg-transparent-black p-4">
-            <Box>
-              <Typography
-                variant="h1"
-                className="font-eurostile font-bold text-light-blue text-xl pb-2"
-              >
-                Rick Sanchez
-              </Typography>
+      <Box className="relative w-[100%] aspect-square border border-light-blue shadow-main">
+        <Image
+          src="https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+          alt="img"
+          layout="fill"
+          objectFit="cover"
+        />
+      </Box>
+      <Box className="border border-light-blue shadow-main bg-transparent-black p-4">
+        <Box>
+          <Typography
+            variant="h1"
+            className="font-eurostile font-bold text-light-blue text-xl pb-2"
+          >
+            Rick Sanchez
+          </Typography>
 
-              {character_data.map((character, index) => (
-                <Box key={index}>
-                  <Typography
-                    className="font-eurostile font-bold text-white inline"
-                    variant="body1"
-                  >
-                    {character.label + ": "}
-                  </Typography>
-                  <Typography
-                    className="font-eurostile text-white inline"
-                    variant="body1"
-                  >
-                    {character.value}
-                  </Typography>
-                </Box>
-              ))}
+          {character_data.map((character, index) => (
+            <Box key={index}>
+              <Typography
+                className="font-eurostile font-bold text-white inline"
+                variant="body1"
+              >
+                {character.label + ": "}
+              </Typography>
+              <Typography
+                className="font-eurostile text-white inline"
+                variant="body1"
+              >
+                {character.value}
+              </Typography>
             </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={3}>
-          d
-        </Grid>
-        <Grid item xs={3}>
-          d
-        </Grid>
-      </Grid>
+          ))}
+        </Box>
+      </Box>
     </Box>
   );
 }

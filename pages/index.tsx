@@ -5,11 +5,34 @@ import Box from "@mui/material/Box";
 
 import CHARACTERS_QUERY from "./../src/Graphql/Queries/Characters.graphql";
 import client from "../apollo-client";
-
+import { ApolloQueryResult } from "@apollo/client";
 import MainTitle from "../src/components/home/mainTitle";
 import CharacterView from "../src/components/home/charactersView";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-export default function Home() {
+import { character, charactersResult } from "../src/ts/types/character.types";
+
+type graphqlResponse = {
+  characters: {
+    results: character[];
+  };
+  loading: boolean;
+  network: number;
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const characters: ApolloQueryResult<graphqlResponse> = await client.query({
+    query: CHARACTERS_QUERY,
+  });
+  return {
+    props: {
+      characters: characters.data.characters.results.slice(0, 3),
+    },
+  };
+};
+
+export default function Home({ characters }: charactersResult): JSX.Element {
+  console.log("Characters: ?? ", characters);
   return (
     <div className="bg-main bg-cover">
       <Head>
@@ -21,7 +44,7 @@ export default function Home() {
       <main className="min-h-screen max-w-screen-lg m-auto">
         <Box className="pt-12">
           <MainTitle />
-          <CharacterView />
+          <CharacterView characters={characters} />
         </Box>
       </main>
 
@@ -39,16 +62,4 @@ export default function Home() {
       </footer>
     </div>
   );
-}
-
-export async function getStaticProps(context: any) {
-  const characters = await client.query({
-    query: CHARACTERS_QUERY,
-  });
-  console.log(characters.data.characters.results);
-  return {
-    props: {
-      characters: characters,
-    },
-  };
 }
