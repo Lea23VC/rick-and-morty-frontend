@@ -2,13 +2,12 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import { useQuery, gql } from "@apollo/client";
+
 import CHARACTERS_QUERY from "./../src/Graphql/Queries/Characters.graphql";
 import client from "../apollo-client";
-import Typography from "@mui/material/Typography";
 
 import MainTitle from "../src/components/home/mainTitle";
+import CharacterView from "../src/components/home/charactersView";
 
 export default function Home() {
   return (
@@ -22,6 +21,7 @@ export default function Home() {
       <main className="min-h-screen max-w-screen-lg m-auto">
         <Box className="pt-12">
           <MainTitle />
+          <CharacterView />
         </Box>
       </main>
 
