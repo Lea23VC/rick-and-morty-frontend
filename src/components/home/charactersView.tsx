@@ -7,9 +7,9 @@ import CharacterBox from "../characters/characterBox";
 
 export default function charactersView(): JSX.Element {
   return (
-    <Box>
+    <Box className="sm:pt-4 md:pt-8">
       <Box>
-        <Typography className="font-eurostile font-bold text-2xl sm:text-3xl md:text-4xl text-center uppercase text-shadow-main">
+        <Typography className="font-eurostile font-bold text-3xl sm:text-4xl md:text-5xl text-center uppercase text-shadow-main text-white">
           Characters
         </Typography>
       </Box>

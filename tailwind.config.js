@@ -28,6 +28,13 @@ module.exports = {
       textShadow: {
         main: "0 0 7px rgba(99,253,251,0.54)",
       },
+      colors: {
+        "light-blue": "#00ffea",
+        "transparent-black": "rgba(0, 0, 0, 0.6)",
+      },
+      boxShadow: {
+        main: "0 0 10px 5px rgba(159, 235, 243, 0.27)",
+      },
     },
   },
   plugins: [
