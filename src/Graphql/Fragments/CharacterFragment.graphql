@@ -1,4 +1,5 @@
 fragment CharacterData on Characters {
+
   results {
     id
     name
@@ -14,4 +15,10 @@ fragment CharacterData on Characters {
       name
     }
   }
+   info {
+      count
+      pages
+      next
+      prev
+    } 
 }

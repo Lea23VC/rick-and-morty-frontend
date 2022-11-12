@@ -19,10 +19,6 @@ export type characterInitialData = {
   origin: location;
 };
 
-export type charactersResult = {
-  characters: character[];
-};
-
 export type characterProp = {
   character: character;
 };

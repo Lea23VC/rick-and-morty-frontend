@@ -30,35 +30,21 @@ export default function characterBox({
         <Image
           src={character.image}
           alt="img"
-          layout="fill"
-          objectFit="cover"
+          className="object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
         />
       </Box>
-      <Box className="border border-light-blue shadow-main bg-transparent-black p-4 ">
+      <Box className="border border-light-blue shadow-main bg-transparent-black p-2 ">
         <Box>
           <Typography
             variant="h1"
-            className="font-eurostile font-bold text-light-blue text-xl pb-2"
+            className="font-eurostile font-bold text-light-blue text-sm text-center"
           >
             {character.name}
           </Typography>
-
-          {character.info.map((aaa, index) => (
-            <Box key={index}>
-              <Typography
-                className="font-eurostile font-bold text-white inline"
-                variant="body1"
-              >
-                {aaa.label + ": "}
-              </Typography>
-              <Typography
-                className="font-eurostile text-white inline"
-                variant="body1"
-              >
-                {aaa.value}
-              </Typography>
-            </Box>
-          ))}
         </Box>
       </Box>
     </Box>

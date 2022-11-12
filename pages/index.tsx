@@ -14,15 +14,24 @@ import createCharacterInfoArray from "../src/utils/createCharacterInfoArray";
 
 import {
   characterInitialData,
-  charactersResult,
+  character,
 } from "../src/ts/types/character.types";
+
+import { pagination } from "../src/ts/types/info.types";
 
 type graphqlResponse = {
   characters: {
     results: characterInitialData[];
+    info: pagination;
   };
+
   loading: boolean;
   network: number;
+};
+
+type homeProps = {
+  characters: character[];
+  queryInfo: pagination;
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
@@ -31,15 +40,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
   });
   return {
     props: {
-      characters: createCharacterInfoArray(
-        characters.data.characters.results.slice(0, 3)
-      ),
+      characters: createCharacterInfoArray(characters.data.characters.results),
+      queryInfo: characters.data.characters.info,
     },
   };
 };
 
-export default function Home({ characters }: charactersResult): JSX.Element {
+export default function Home({
+  characters,
+  queryInfo,
+}: homeProps): JSX.Element {
   console.log("Characters: ?? ", characters);
+  console.log("Pagination info: ", queryInfo.count);
   return (
     <div className="bg-main bg-cover">
       <Head>
@@ -51,7 +63,7 @@ export default function Home({ characters }: charactersResult): JSX.Element {
       <main className="min-h-screen max-w-screen-lg m-auto">
         <Box className="pt-12">
           <MainTitle />
-          <CharacterView characters={characters} />
+          <CharacterView characters={characters} info={queryInfo} />
         </Box>
       </main>
 

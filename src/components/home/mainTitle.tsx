@@ -12,6 +12,7 @@ export default function mainTitle(): JSX.Element {
           alt="Rick and Morty logo"
           width={500}
           height={500}
+          priority
         />
       </Box>
 
