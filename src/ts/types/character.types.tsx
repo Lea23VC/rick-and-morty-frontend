@@ -4,7 +4,7 @@ import { info } from "./info.types";
 export type character = {
   name: string;
   image: string;
-  info: info[];
+  info?: info[];
 };
 
 export type characterInitialData = {

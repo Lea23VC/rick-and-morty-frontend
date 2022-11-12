@@ -1,17 +1,17 @@
 fragment CharacterData on Characters {
 
   results {
-    id
-    name
-    status
-    species
-    type
-    gender
-    image
-    origin {
+    id @include(if: $withMoreData)
+    name 
+    status @include(if: $withMoreData)
+    species @include(if: $withMoreData)
+    type @include(if: $withMoreData)
+    gender @include(if: $withMoreData)
+    image 
+    origin @include(if: $withMoreData) {
       name
     }
-    location {
+    location @include(if: $withMoreData) {
       name
     }
   }

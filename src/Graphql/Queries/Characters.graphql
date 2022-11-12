@@ -1,6 +1,6 @@
 #import "../Fragments/CharacterFragment.graphql"
 
-query GetCharacters($name: String, $page: Int = 1) {
+query GetCharacters($name: String, $page: Int = 1, $withMoreData: Boolean = true) {
   characters(page: $page, filter: { name: $name }) {
     ...CharacterData
   }

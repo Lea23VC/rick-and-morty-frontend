@@ -13,7 +13,11 @@ import {
   characterInitialData,
 } from "../../ts/types/character.types";
 import { pagination } from "../../ts/types/info.types";
-import { useState as UseState, useEffect as UseEffect } from "react";
+import {
+  useState as UseState,
+  useEffect as UseEffect,
+  useRef as UseRef,
+} from "react";
 
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import CHARACTER_QUERY from "../../Graphql/Queries/Characters.graphql";
@@ -30,19 +34,21 @@ export default function charactersView({
   info,
 }: characterViewProps): JSX.Element {
   const [page, setPage] = UseState(1);
+  console.log("Page: ", page);
   const [currentCharacters, setCurrentCharacters] = UseState(characters);
 
-  const [loadCharacters, { loading, data, error, called }] =
+  const [loadCharacters, { loading, data, error, called, refetch }] =
     UseLazyQuery(CHARACTER_QUERY);
 
-  function getCharacters() {}
-
   UseEffect(() => {
-    loadCharacters({ variables: { page: page } }).then((data) => {
-      const results: characterInitialData[] = data.data.characters.results;
-      setCurrentCharacters(createCharacterInfoArray(results));
-      console.log("Results: ", data.data.characters);
-    });
+    if (page != 1 || called)
+      loadCharacters({ variables: { page: page, withMoreData: false } }).then(
+        (data) => {
+          const results: character[] = data.data.characters.results;
+          setCurrentCharacters(results);
+          console.log("Results: ", data.data.characters);
+        }
+      );
   }, [page]);
 
   return (
@@ -84,10 +90,10 @@ export default function charactersView({
           <Pagination
             count={info.pages}
             color="primary"
+            defaultPage={1}
             page={page}
             onChange={(e, page) => {
               setPage(page);
-              getCharacters();
             }}
           />
         </Stack>

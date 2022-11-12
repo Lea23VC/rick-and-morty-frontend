@@ -37,10 +37,11 @@ type homeProps = {
 export const getStaticProps: GetStaticProps = async (context) => {
   const characters: ApolloQueryResult<graphqlResponse> = await client.query({
     query: CHARACTERS_QUERY,
+    variables: { withMoreData: false },
   });
   return {
     props: {
-      characters: createCharacterInfoArray(characters.data.characters.results),
+      characters: characters.data.characters.results,
       queryInfo: characters.data.characters.info,
     },
   };
