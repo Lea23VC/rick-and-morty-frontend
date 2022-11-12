@@ -10,11 +10,16 @@ import MainTitle from "../src/components/home/mainTitle";
 import CharacterView from "../src/components/home/charactersView";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-import { character, charactersResult } from "../src/ts/types/character.types";
+import createCharacterInfoArray from "../src/utils/createCharacterInfoArray";
+
+import {
+  characterInitialData,
+  charactersResult,
+} from "../src/ts/types/character.types";
 
 type graphqlResponse = {
   characters: {
-    results: character[];
+    results: characterInitialData[];
   };
   loading: boolean;
   network: number;
@@ -26,7 +31,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
   });
   return {
     props: {
-      characters: characters.data.characters.results.slice(0, 3),
+      characters: createCharacterInfoArray(
+        characters.data.characters.results.slice(0, 3)
+      ),
     },
   };
 };

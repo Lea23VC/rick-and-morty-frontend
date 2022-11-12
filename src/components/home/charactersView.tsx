@@ -6,7 +6,11 @@ import Grid from "@mui/material/Grid";
 
 import CharacterBox from "../characters/characterBox";
 
-export default function charactersView({ characters }): JSX.Element {
+import { charactersResult } from "../../ts/types/character.types";
+
+export default function charactersView({
+  characters,
+}: charactersResult): JSX.Element {
   return (
     <Box className="sm:pt-4 md:pt-8">
       <Box>
@@ -14,10 +18,10 @@ export default function charactersView({ characters }): JSX.Element {
           Characters
         </Typography>
       </Box>
-      <Grid container spacing={5}>
+      <Grid container spacing={5} className="place-items-stretch">
         {characters.map((character, index) => (
-          <Grid item xs={4} key={index}>
-            <CharacterBox />
+          <Grid item xs={4} key={index} className="relative">
+            <CharacterBox character={character} />
           </Grid>
         ))}
       </Grid>

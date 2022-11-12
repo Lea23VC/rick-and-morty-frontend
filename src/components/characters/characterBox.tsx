@@ -3,7 +3,12 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Grid from "@mui/material/Grid";
-export default function characterBox(): JSX.Element {
+
+import { characterProp } from "../../ts/types/character.types";
+
+export default function characterBox({
+  character,
+}: characterProp): JSX.Element {
   type data = {
     label: string;
     value: string;
@@ -20,37 +25,37 @@ export default function characterBox(): JSX.Element {
   ];
 
   return (
-    <Box>
+    <Box className="">
       <Box className="relative w-[100%] aspect-square border border-light-blue shadow-main">
         <Image
-          src="https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+          src={character.image}
           alt="img"
           layout="fill"
           objectFit="cover"
         />
       </Box>
-      <Box className="border border-light-blue shadow-main bg-transparent-black p-4">
+      <Box className="border border-light-blue shadow-main bg-transparent-black p-4 ">
         <Box>
           <Typography
             variant="h1"
             className="font-eurostile font-bold text-light-blue text-xl pb-2"
           >
-            Rick Sanchez
+            {character.name}
           </Typography>
 
-          {character_data.map((character, index) => (
+          {character.info.map((aaa, index) => (
             <Box key={index}>
               <Typography
                 className="font-eurostile font-bold text-white inline"
                 variant="body1"
               >
-                {character.label + ": "}
+                {aaa.label + ": "}
               </Typography>
               <Typography
                 className="font-eurostile text-white inline"
                 variant="body1"
               >
-                {character.value}
+                {aaa.value}
               </Typography>
             </Box>
           ))}
