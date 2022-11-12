@@ -6,10 +6,19 @@ import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import CharacterBox from "../characters/characterBox";
+import CircularProgress from "@mui/material/CircularProgress";
 
-import { character } from "../../ts/types/character.types";
+import {
+  character,
+  characterInitialData,
+} from "../../ts/types/character.types";
 import { pagination } from "../../ts/types/info.types";
-import { useState as UseState } from "react";
+import { useState as UseState, useEffect as UseEffect } from "react";
+
+import { useLazyQuery as UseLazyQuery } from "@apollo/client";
+import CHARACTER_QUERY from "../../Graphql/Queries/Characters.graphql";
+
+import createCharacterInfoArray from "../../utils/createCharacterInfoArray";
 
 type characterViewProps = {
   characters: character[];
@@ -21,6 +30,20 @@ export default function charactersView({
   info,
 }: characterViewProps): JSX.Element {
   const [page, setPage] = UseState(1);
+  const [currentCharacters, setCurrentCharacters] = UseState(characters);
+
+  const [loadCharacters, { loading, data, error, called }] =
+    UseLazyQuery(CHARACTER_QUERY);
+
+  function getCharacters() {}
+
+  UseEffect(() => {
+    loadCharacters({ variables: { page: page } }).then((data) => {
+      const results: characterInitialData[] = data.data.characters.results;
+      setCurrentCharacters(createCharacterInfoArray(results));
+      console.log("Results: ", data.data.characters);
+    });
+  }, [page]);
 
   return (
     <Box className="sm:pt-4 md:pt-8">
@@ -30,21 +53,28 @@ export default function charactersView({
         </Typography>
       </Box>
       <Container className="py-10">
-        <Grid container spacing={5} className="place-content-center">
-          {characters.map((character, index) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={3}
-              lg={2}
-              key={index}
-              className="relative"
-            >
-              <CharacterBox character={character} />
-            </Grid>
-          ))}
-        </Grid>
+        {loading ? (
+          <Box className="min-w-[100vh] ">
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Grid container spacing={5} className="place-content-center">
+            {currentCharacters.map((character, index) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={3}
+                lg={2}
+                key={index}
+                className="relative"
+              >
+                <CharacterBox character={character} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+
         <Stack
           spacing={2}
           justifyContent="center"
@@ -57,6 +87,7 @@ export default function charactersView({
             page={page}
             onChange={(e, page) => {
               setPage(page);
+              getCharacters();
             }}
           />
         </Stack>
