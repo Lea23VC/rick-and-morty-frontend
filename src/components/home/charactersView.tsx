@@ -10,6 +10,7 @@ import CharacterBox from "../characters/characterBox";
 import CircularProgress from "@mui/material/CircularProgress";
 import dynamic from "next/dynamic";
 
+import SearchBar from "../searchBar/searchBar";
 import {
   character,
   characterInitialData,
@@ -33,6 +34,12 @@ type characterViewProps = {
   info: pagination;
 };
 
+type queryVars = {
+  withMoreData: boolean;
+  page: number;
+  name: string;
+};
+
 const StyledPagination = styled(Pagination)(({ theme }) => ({
   padding: "20px 0 10px",
   [`& .MuiPaginationItem-text`]: {
@@ -54,12 +61,21 @@ export default function charactersView({
     Number | undefined
   >();
   const [open, setOpen] = UseState(false);
+  const [paginationInfo, setPaginationInfo] = UseState(info);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setCurrentCharacterID(undefined);
     setOpen(false);
     console.log("Close??");
   };
+
+  const [queryVariables, setQueryVariables] = UseState<{
+    name?: string;
+    page?: number;
+    withMoreData: boolean;
+  }>({
+    withMoreData: false,
+  });
 
   const [page, setPage] = UseState(1);
   console.log("Page: ", page);
@@ -69,15 +85,21 @@ export default function charactersView({
     UseLazyQuery(CHARACTER_QUERY);
 
   UseEffect(() => {
-    if (page != 1 || called)
-      loadCharacters({ variables: { page: page, withMoreData: false } }).then(
-        (data) => {
-          const results: character[] = data.data.characters.results;
-          setCurrentCharacters(results);
-          console.log("Results: ", data.data.characters);
-        }
-      );
-  }, [page]);
+    console.log("query variables: ", queryVariables);
+    if (page != 1 || called || queryVariables.name)
+      loadCharacters({ variables: queryVariables }).then((data) => {
+        const results: character[] = data.data.characters.results;
+        setCurrentCharacters(results);
+        console.log("Results: ", data.data.characters);
+        setPaginationInfo(data.data.characters.info);
+      });
+  }, [queryVariables]);
+
+  function searchByName(name: string): void {
+    console.log("cccc: ", name);
+    setQueryVariables({ ...queryVariables, page: 1, name: name });
+    setPage(1);
+  }
 
   return (
     <Box className="sm:pt-4 md:pt-8">
@@ -86,6 +108,10 @@ export default function charactersView({
           Characters
         </Typography>
       </Box>
+      <Box className="p-4">
+        <SearchBar onClick={searchByName} />
+      </Box>
+
       <Container className="py-10">
         {loading ? (
           <Box className="min-w-[100vh] ">
@@ -94,15 +120,7 @@ export default function charactersView({
         ) : (
           <Grid container spacing={5} className="place-content-center">
             {currentCharacters.map((character, index) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={3}
-                lg={2}
-                key={index}
-                className="relative"
-              >
+              <Grid item xs={6} md={3} lg={2} key={index} className="relative">
                 <CharacterBox
                   character={character}
                   handleOpen={handleOpen}
@@ -115,12 +133,13 @@ export default function charactersView({
 
         <Stack spacing={2} justifyContent="center" alignItems="center">
           <StyledPagination
-            count={info.pages}
+            count={paginationInfo.pages}
             color="primary"
             defaultPage={1}
             page={page}
             onChange={(e, page) => {
               setPage(page);
+              setQueryVariables({ ...queryVariables, page: page });
             }}
           />
         </Stack>

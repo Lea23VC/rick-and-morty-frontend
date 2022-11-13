@@ -52,7 +52,7 @@ export default function characterModal({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box className="absolute top-1/2 left-1/2 w-[300px] sm:w-[400px] md:w-[800px] bg-transparent-black -translate-y-1/2 -translate-x-1/2 shadow-main border border-light-blue p-10">
+      <Box className="absolute top-1/2 left-1/2 w-[80%] sm:w-[400px] md:w-[800px] bg-transparent-black -translate-y-1/2 -translate-x-1/2 shadow-main border border-light-blue p-5 sm:p-10">
         {loading || !called || characterData == undefined ? (
           <Container className="flex justify-center">
             <CircularProgress />

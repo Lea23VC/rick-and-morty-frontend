@@ -6,12 +6,12 @@ import Image from "next/image";
 export default function mainTitle(): JSX.Element {
   return (
     <Container className="flex justify-center flex-col items-center">
-      <Box>
+      <Box className="h-[100px] w-[80%] xs:w-[300px] sm:w-[400px] aspect-auto relative mb-6">
         <Image
           src="/images/logos/Rick_and_Morty.svg"
           alt="Rick and Morty logo"
-          width={500}
-          height={200}
+          layout="fill"
+          objectFit="fill"
           priority
         />
       </Box>
