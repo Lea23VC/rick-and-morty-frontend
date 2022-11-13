@@ -7,6 +7,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import CharacterBox from "../characters/characterBox";
 import CircularProgress from "@mui/material/CircularProgress";
+import dynamic from "next/dynamic";
 
 import {
   character,
@@ -22,8 +23,9 @@ import {
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import CHARACTER_QUERY from "../../Graphql/Queries/Characters.graphql";
 
-import createCharacterInfoArray from "../../utils/createCharacterInfoArray";
-
+const CharacterModal = dynamic(() => import("../characters/characterModal"), {
+  suspense: true,
+});
 type characterViewProps = {
   characters: character[];
   info: pagination;
@@ -33,6 +35,17 @@ export default function charactersView({
   characters,
   info,
 }: characterViewProps): JSX.Element {
+  const [currentCharacterID, setCurrentCharacterID] = UseState<
+    Number | undefined
+  >();
+  const [open, setOpen] = UseState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setCurrentCharacterID(undefined);
+    setOpen(false);
+    console.log("Close??");
+  };
+
   const [page, setPage] = UseState(1);
   console.log("Page: ", page);
   const [currentCharacters, setCurrentCharacters] = UseState(characters);
@@ -75,7 +88,11 @@ export default function charactersView({
                 key={index}
                 className="relative"
               >
-                <CharacterBox character={character} />
+                <CharacterBox
+                  character={character}
+                  handleOpen={handleOpen}
+                  setCurrentCharacterID={setCurrentCharacterID}
+                />
               </Grid>
             ))}
           </Grid>
@@ -97,6 +114,11 @@ export default function charactersView({
             }}
           />
         </Stack>
+        <CharacterModal
+          open={open}
+          handleClose={handleClose}
+          characterID={currentCharacterID}
+        />
       </Container>
     </Box>
   );

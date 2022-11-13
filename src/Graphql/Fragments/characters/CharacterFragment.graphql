@@ -1,7 +1,7 @@
-fragment CharacterData on Characters {
+fragment CharacterData on Character {
 
-  results {
-    id @include(if: $withMoreData)
+
+    id 
     name 
     status @include(if: $withMoreData)
     species @include(if: $withMoreData)
@@ -14,11 +14,6 @@ fragment CharacterData on Characters {
     location @include(if: $withMoreData) {
       name
     }
-  }
-   info {
-      count
-      pages
-      next
-      prev
-    } 
+  
+   
 }

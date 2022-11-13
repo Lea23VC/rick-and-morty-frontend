@@ -10,8 +10,6 @@ import MainTitle from "../src/components/home/mainTitle";
 import CharacterView from "../src/components/home/charactersView";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-import createCharacterInfoArray from "../src/utils/createCharacterInfoArray";
-
 import {
   characterInitialData,
   character,

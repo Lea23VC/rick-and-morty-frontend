@@ -1,7 +1,16 @@
-#import "../Fragments/CharacterFragment.graphql"
 
-query GetCharacters($name: String, $page: Int = 1, $withMoreData: Boolean = true) {
+#import "../Fragments/characters/CharacterFragment.graphql"
+query GetCharacters($page: Int = 1, $name: String, $withMoreData: Boolean = true) {
   characters(page: $page, filter: { name: $name }) {
+    results {
     ...CharacterData
+
+    }
+    info {
+      count
+      pages
+      next
+      prev
+    } 
   }
 }

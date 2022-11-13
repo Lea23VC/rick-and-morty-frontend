@@ -1,25 +1,23 @@
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
+import dynamic from "next/dynamic";
+
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
-import Grid from "@mui/material/Grid";
-import Modal from "@mui/material/Modal";
-import ModalUnstyled from "@mui/base/ModalUnstyled";
-import { characterProp } from "../../ts/types/character.types";
-import { useState as UseState } from "react";
 
-import CharacterModal from "./characterModal";
+import { character } from "../../ts/types/character.types";
+import { Dispatch, SetStateAction, useState as UseState } from "react";
+
+type characterBoxProps = {
+  character: character;
+  handleOpen: () => void;
+  setCurrentCharacterID: Dispatch<SetStateAction<Number | undefined>>;
+};
 
 export default function characterBox({
   character,
-}: characterProp): JSX.Element {
-  const [open, setOpen] = UseState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-    console.log("Close??");
-  };
-
+  handleOpen,
+  setCurrentCharacterID,
+}: characterBoxProps): JSX.Element {
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -34,8 +32,14 @@ export default function characterBox({
 
   return (
     <Box>
-      <CharacterModal open={open} handleClose={handleClose} characterID={1} />
-      <Box className="" onClick={handleOpen}>
+      <Box
+        className=""
+        onClick={() => {
+          console.log("char: ", character.id);
+          setCurrentCharacterID(character.id);
+          handleOpen();
+        }}
+      >
         <Box className="relative w-[100%] aspect-square border border-light-blue shadow-main">
           <Image
             src={character.image}
