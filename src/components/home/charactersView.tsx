@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
 
 import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
@@ -23,13 +24,27 @@ import {
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import CHARACTER_QUERY from "../../Graphql/Queries/Characters.graphql";
 
-const CharacterModal = dynamic(() => import("../characters/characterModal"), {
-  suspense: true,
-});
+import CharacterModal from "../characters/characterModal";
+// const CharacterModal = dynamic(() => import("../characters/characterModal"), {
+//   suspense: true,
+// });
 type characterViewProps = {
   characters: character[];
   info: pagination;
 };
+
+const StyledPagination = styled(Pagination)(({ theme }) => ({
+  padding: "20px 0 10px",
+  [`& .MuiPaginationItem-text`]: {
+    color: "white !important",
+    fontFamily: "Eurostile",
+    fontSize: 16,
+    textShadow: "0 0 7px rgba(99,253,251,0.54)",
+  },
+  [`& .MuiPaginationItem-ellipsis`]: {
+    fontFamily: "Roboto",
+  },
+}));
 
 export default function charactersView({
   characters,
@@ -98,13 +113,8 @@ export default function charactersView({
           </Grid>
         )}
 
-        <Stack
-          spacing={2}
-          justifyContent="center"
-          alignItems="center"
-          className="bg-white"
-        >
-          <Pagination
+        <Stack spacing={2} justifyContent="center" alignItems="center">
+          <StyledPagination
             count={info.pages}
             color="primary"
             defaultPage={1}

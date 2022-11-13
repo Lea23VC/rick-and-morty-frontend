@@ -11,7 +11,7 @@ export default function mainTitle(): JSX.Element {
           src="/images/logos/Rick_and_Morty.svg"
           alt="Rick and Morty logo"
           width={500}
-          height={500}
+          height={200}
           priority
         />
       </Box>

@@ -1,9 +1,6 @@
 import Box from "@mui/material/Box";
-
-import Typography from "@mui/material/Typography";
-
 import Modal from "@mui/material/Modal";
-import Image from "next/image";
+
 import CircularProgress from "@mui/material/CircularProgress";
 import { Container } from "@mui/material";
 import CHARACTER_QUERY from "../../Graphql/Queries/Character.graphql";
@@ -13,6 +10,8 @@ import { useEffect as UseEffect, useState as UseState } from "react";
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import { createCharacterInfoArray } from "../../utils/createCharacterInfoArray";
 import { character } from "../../ts/types/character.types";
+
+import CharacterContent from "../characters/characterModalContent";
 
 type modalProps = {
   open: boolean;
@@ -53,50 +52,13 @@ export default function characterModal({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box className="absolute top-1/2 left-1/2 w-[50vw] bg-transparent-black -translate-y-1/2 -translate-x-1/2 shadow-main border border-light-blue p-10">
+      <Box className="absolute top-1/2 left-1/2 w-[300px] sm:w-[400px] md:w-[800px] bg-transparent-black -translate-y-1/2 -translate-x-1/2 shadow-main border border-light-blue p-10">
         {loading || !called || characterData == undefined ? (
           <Container className="flex justify-center">
             <CircularProgress />
           </Container>
         ) : (
-          <Box className="flex relative w-[100%]">
-            <Box className="relative  border border-light-blue shadow-main w-2/5 aspect-square ">
-              <Image
-                src={characterData.image}
-                alt="img"
-                layout="fill"
-                objectFit="contain"
-                className="aspect-square"
-              />
-            </Box>
-            <Box className="border border-light-blue shadow-main bg-transparent-black p-4 w-3/5 ">
-              <Box className="">
-                <Typography
-                  variant="h1"
-                  className="font-eurostile font-bold text-light-blue text-3xl pb-2"
-                >
-                  {characterData.name}
-                </Typography>
-
-                {characterData.info?.map((character, index) => (
-                  <Box key={index}>
-                    <Typography
-                      className="font-eurostile font-bold text-white inline"
-                      variant="body1"
-                    >
-                      {character.label + ": "}
-                    </Typography>
-                    <Typography
-                      className="font-eurostile text-white inline"
-                      variant="body1"
-                    >
-                      {character.value}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
-          </Box>
+          <CharacterContent characterData={characterData} />
         )}
       </Box>
     </Modal>

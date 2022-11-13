@@ -9,7 +9,6 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
 
-  important: true,
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -51,5 +50,6 @@ module.exports = {
   ],
   corePlugins: {
     fontFamily: true,
+    preflight: false,
   },
 };
