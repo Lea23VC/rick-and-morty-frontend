@@ -2,10 +2,16 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
 
-export default function yellowButton() {
+type buttonProps = {
+  label: string;
+  onClick: () => void;
+};
+
+export default function yellowButton({ onClick, label }: buttonProps) {
   return (
     <Stack spacing={2} direction="row" className="flex justify-center">
       <Button
+        onClick={() => onClick()}
         variant="contained"
         color="secondary"
         sx={{ borderWith: "2px", borderColor: "#000" }}
@@ -14,7 +20,7 @@ export default function yellowButton() {
           className="font-eurostile font-bold text-lg"
           variant="button"
         >
-          Add to favorites
+          {label}
         </Typography>
       </Button>
     </Stack>

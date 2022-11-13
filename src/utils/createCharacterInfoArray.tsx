@@ -42,7 +42,6 @@ export function createCharacterInfoArray(
     name: character.name,
     image: character.image,
     info: character_data,
-    location: character.location,
-    origin: character.origin,
+    id: character.id,
   };
 }
