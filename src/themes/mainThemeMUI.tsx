@@ -9,9 +9,11 @@ declare module "@mui/material/styles" {
 
   interface Palette {
     neutral: Palette["primary"];
+    backgroundPage: Palette["primary"];
   }
   interface PaletteOptions {
     neutral: PaletteOptions["primary"];
+    backgroundPage: Palette["primary"];
   }
 
   interface PaletteColor {
@@ -43,6 +45,13 @@ export const theme = createTheme({
       contrastText: "#fff",
     },
     secondary: {
+      light: "#ffcd0d",
+      main: "#00ffea",
+      dark: "#ffcd0d",
+      contrastText: "#000",
+    },
+
+    backgroundPage: {
       light: "#ffcd0d",
       main: "#00ffea",
       dark: "#ffcd0d",
