@@ -29,6 +29,7 @@ module.exports = {
       },
       colors: {
         "light-blue": "#00ffea",
+        "main-yellow": "#ffcd0d",
         "transparent-black": "rgba(0, 0, 0, 0.6)",
       },
       boxShadow: {
