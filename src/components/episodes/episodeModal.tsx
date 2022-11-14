@@ -3,38 +3,38 @@ import Modal from "@mui/material/Modal";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import { Container } from "@mui/material";
-import CHARACTER_QUERY from "../../Graphql/Queries/Character.graphql";
+import EPISODE_QUERY from "../../Graphql/Queries/Episode.graphql";
 
 import { useEffect as UseEffect, useState as UseState } from "react";
 
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import { createCharacterInfoArray } from "../../utils/createCharacterInfoArray";
-import { character } from "../../ts/types/character.types";
 
-import CharacterContent from "../characters/characterModalContent";
+import { episode } from "../../ts/types/episode.types";
 
 type modalProps = {
   open: boolean;
   handleClose: () => void;
-  characterID: Number | undefined;
+  episodeID: Number | undefined;
 };
 
 export default function characterModal({
   open,
   handleClose,
-  characterID,
+  episodeID,
 }: modalProps): JSX.Element {
-  console.log("Character ID: ", characterID);
-  const [loadCharacter, { loading, data, error, called, refetch }] =
-    UseLazyQuery(CHARACTER_QUERY);
+  console.log("Character ID: ", episodeID);
+  const [loadEpisode, { loading, data, error, called, refetch }] =
+    UseLazyQuery(EPISODE_QUERY);
 
-  const [characterData, setCharacterData] = UseState<character | undefined>();
+  const [episodeData, setEpisodeData] = UseState<episode | undefined>();
   UseEffect(() => {
-    if (open && characterID) {
-      loadCharacter({ variables: { id: characterID } })
+    if (open && episodeID) {
+      loadEpisode({ variables: { id: episodeID } })
         .then(({ data }) => {
-          console.log(createCharacterInfoArray(data.character));
-          setCharacterData(createCharacterInfoArray(data.character));
+          console.log("data");
+          //   console.log(createCharacterInfoArray(data.character));
+          //   setCharacterData(createCharacterInfoArray(data.character));
         })
         .catch((error) => {
           console.log(error);
@@ -47,18 +47,19 @@ export default function characterModal({
       open={open}
       onClose={() => {
         handleClose();
-        setCharacterData(undefined);
+        setEpisodeData(undefined);
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box className="absolute top-1/2 left-1/2 w-[80%] sm:w-[400px] md:w-[800px] bg-transparent-black -translate-y-1/2 -translate-x-1/2 shadow-main border border-light-blue border-solid p-5 sm:p-10">
-        {loading || !called || characterData == undefined ? (
+        {loading || !called || episodeData == undefined ? (
           <Container className="flex justify-center">
             <CircularProgress />
           </Container>
         ) : (
-          <CharacterContent characterData={characterData} />
+          //   <CharacterContent characterData={characterData} />
+          "s"
         )}
       </Box>
     </Modal>

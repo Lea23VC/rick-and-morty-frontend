@@ -1,5 +1,5 @@
 
-#import "../Fragments/characters/CharacterFragment.graphql"
+#import "../Fragments/episodes/EpisodeFragment.graphql"
 query getEpisodes($page: Int = 1, $name: String, $episode: String, $withMoreData: Boolean = true, $withCharactersData: Boolean = false) {
   episodes(page: $page, filter: {name: $name, episode: $episode}) {
     info {
@@ -9,14 +9,7 @@ query getEpisodes($page: Int = 1, $name: String, $episode: String, $withMoreData
       prev
     }
     results {
-      id
-      name
-      air_date
-      episode
-      created
-      characters @include(if: $withCharactersData) {
-        ...CharacterData
-      }
+      ...EpisodeData
     }
   }
 }

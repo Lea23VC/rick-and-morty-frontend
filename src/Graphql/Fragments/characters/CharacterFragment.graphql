@@ -1,6 +1,5 @@
 fragment CharacterData on Character {
 
-
     id 
     name 
     status @include(if: $withMoreData)

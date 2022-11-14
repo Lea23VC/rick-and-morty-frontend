@@ -1,0 +1,15 @@
+#import "../characters/CharacterFragment.graphql"
+
+fragment EpisodeData on Episode {
+
+      id
+      name
+      air_date @include(if: $withCharactersData)
+      episode
+      created @include(if: $withCharactersData)
+      characters @include(if: $withCharactersData) {
+        ...CharacterData
+      }
+  
+   
+}

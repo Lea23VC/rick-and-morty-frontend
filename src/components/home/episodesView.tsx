@@ -7,27 +7,22 @@ import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
-import dynamic from "next/dynamic";
 
 import SearchBar from "../searchBar/searchBar";
 
 import { pagination } from "../../ts/types/info.types";
-import {
-  useState as UseState,
-  useEffect as UseEffect,
-  useRef as UseRef,
-} from "react";
+import { useState as UseState, useEffect as UseEffect } from "react";
 
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import EPISODES_QUERY from "../../Graphql/Queries/Episodes.graphql";
-
-import CharacterModal from "../characters/characterModal";
 
 import { useRouter as UseRouter } from "next/router";
 
 import { episodeInitialData } from "../../ts/types/episode.types";
 
 import EpisodeBox from "../../components/episodes/episodeBox";
+
+import EpisodeModal from "../../components/episodes/episodeModal";
 
 // const CharacterModal = dynamic(() => import("../characters/characterModal"), {
 //   suspense: true,
@@ -61,7 +56,7 @@ export default function charactersView({
   info,
 }: episodesViewProps): JSX.Element {
   console.log("episodes: ", episodes);
-  const [currentCharacterID, setCurrentCharacterID] = UseState<
+  const [currentEpisodeID, setCurrentEpisodeID] = UseState<
     Number | undefined
   >();
 
@@ -72,7 +67,7 @@ export default function charactersView({
   const [paginationInfo, setPaginationInfo] = UseState(info);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setCurrentCharacterID(undefined);
+    setCurrentEpisodeID(undefined);
     setOpen(false);
   };
 
@@ -113,7 +108,6 @@ export default function charactersView({
   }, [queryVariables]);
 
   function searchByName(name: string): void {
-    console.log("cccc: ", name);
     setQueryVariables({ ...queryVariables, page: 1, name: name });
     setPage(1);
   }
@@ -143,9 +137,13 @@ export default function charactersView({
                 md={3}
                 lg={3}
                 key={index}
-                className="relative border border-light-blue shadow-main bg-transparent-black p-4 "
+                className="relative border  border-light-blue border-solid shadow-main bg-transparent-black p-4 "
               >
-                <EpisodeBox episode={episode} />
+                <EpisodeBox
+                  episode={episode}
+                  handleOpen={handleOpen}
+                  setCurrentEpisodeID={setCurrentEpisodeID}
+                />
               </Grid>
             ))}
           </Grid>
@@ -163,10 +161,10 @@ export default function charactersView({
             }}
           />
         </Stack>
-        <CharacterModal
+        <EpisodeModal
           open={open}
           handleClose={handleClose}
-          characterID={currentCharacterID}
+          episodeID={currentEpisodeID}
         />
       </Container>
     </Box>

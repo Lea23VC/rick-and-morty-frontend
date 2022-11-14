@@ -1,60 +1,29 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
 
 import Grid from "@mui/material/Grid";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
 import CharacterBox from "../characters/characterBox";
 import CircularProgress from "@mui/material/CircularProgress";
-import dynamic from "next/dynamic";
 
-import SearchBar from "../searchBar/searchBar";
-import {
-  character,
-  characterInitialData,
-} from "../../ts/types/character.types";
+import { characterInitialData } from "../../ts/types/character.types";
 import { pagination } from "../../ts/types/info.types";
-import {
-  useState as UseState,
-  useEffect as UseEffect,
-  useRef as UseRef,
-} from "react";
+import { useState as UseState, useEffect as UseEffect } from "react";
 
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import CHARACTER_QUERY from "../../Graphql/Queries/Characters.graphql";
 
 import CharacterModal from "../characters/characterModal";
 
+import ViewLayout from "../layouts/viewLayout";
+
 import { useRouter as UseRouter } from "next/router";
 
-// const CharacterModal = dynamic(() => import("../characters/characterModal"), {
-//   suspense: true,
-// });
+import Pagination from "../pagination/pagination";
+
 type characterViewProps = {
-  characters: character[];
+  characters: characterInitialData[];
   info: pagination;
 };
-
-type queryVars = {
-  withMoreData: boolean;
-  page: number;
-  name: string;
-};
-
-const StyledPagination = styled(Pagination)(({ theme }) => ({
-  padding: "20px 0 10px",
-  [`& .MuiPaginationItem-text`]: {
-    color: "white !important",
-    fontFamily: "Eurostile",
-    fontSize: 16,
-    textShadow: "0 0 7px rgba(99,253,251,0.54)",
-  },
-  [`& .MuiPaginationItem-ellipsis`]: {
-    fontFamily: "Roboto",
-  },
-}));
 
 export default function charactersView({
   characters,
@@ -90,13 +59,13 @@ export default function charactersView({
 
   const [page, setPage] = UseState(1);
 
-  const [currentCharacters, setCurrentCharacters] = UseState(characters);
+  const [currentCharacters, setCurrentCharacters] =
+    UseState<characterInitialData[]>(characters);
 
   const [loadCharacters, { loading, data, error, called, refetch }] =
     UseLazyQuery(CHARACTER_QUERY);
 
   UseEffect(() => {
-    console.log("query variables: ", queryVariables);
     if (
       page != 1 ||
       called ||
@@ -104,30 +73,23 @@ export default function charactersView({
       Object.keys(router.query).length > 0
     )
       loadCharacters({ variables: queryVariables }).then((data) => {
-        const results: character[] = data.data.characters.results;
+        const results: characterInitialData[] = data.data.characters.results;
         setCurrentCharacters(results);
-        console.log("Results: ", data.data.characters);
         setPaginationInfo(data.data.characters.info);
       });
   }, [queryVariables]);
 
   function searchByName(name: string): void {
-    console.log("cccc: ", name);
     setQueryVariables({ ...queryVariables, page: 1, name: name });
     setPage(1);
   }
 
   return (
-    <Box className="sm:pt-4 md:pt-8">
-      <Box>
-        <Typography className="font-eurostile font-bold text-3xl sm:text-4xl md:text-5xl text-center uppercase text-shadow-main text-white">
-          Characters
-        </Typography>
-      </Box>
-      <Box className="p-4 bg-transparent-black m-4">
-        <SearchBar onClick={searchByName} label="Enter a character name" />
-      </Box>
-
+    <ViewLayout
+      title="Characters"
+      searchAction={searchByName}
+      loading={loading}
+    >
       <Container className="py-10">
         {loading ? (
           <Box className="min-w-[100vh] ">
@@ -146,25 +108,21 @@ export default function charactersView({
             ))}
           </Grid>
         )}
+        <Pagination
+          page={page}
+          paginationInfo={paginationInfo}
+          onChange={(page) => {
+            setPage(page);
+            setQueryVariables({ ...queryVariables, page: page });
+          }}
+        />
 
-        <Stack spacing={2} justifyContent="center" alignItems="center">
-          <StyledPagination
-            count={paginationInfo.pages}
-            color="primary"
-            defaultPage={1}
-            page={page}
-            onChange={(e, page) => {
-              setPage(page);
-              setQueryVariables({ ...queryVariables, page: page });
-            }}
-          />
-        </Stack>
         <CharacterModal
           open={open}
           handleClose={handleClose}
           characterID={currentCharacterID}
         />
       </Container>
-    </Box>
+    </ViewLayout>
   );
 }

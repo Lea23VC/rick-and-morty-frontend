@@ -40,7 +40,7 @@ export default function characterBox({
           handleOpen();
         }}
       >
-        <Box className="relative w-[100%] aspect-square border border-light-blue shadow-main">
+        <Box className="relative w-[100%] aspect-square border border-light-blue border-solid shadow-main">
           <Image
             src={character.image}
             alt="img"
@@ -51,7 +51,7 @@ export default function characterBox({
               33vw"
           />
         </Box>
-        <Box className="border border-light-blue shadow-main bg-transparent-black p-2 ">
+        <Box className="border border-light-blue border-solid shadow-main bg-transparent-black p-2 ">
           <Box>
             <Typography
               variant="h1"
