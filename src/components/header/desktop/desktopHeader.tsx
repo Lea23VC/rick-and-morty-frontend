@@ -5,38 +5,19 @@ import { useEffect as UseEffect, useRef as UseRef } from "react";
 import Link from "next/link";
 import { useRouter as UseRouter } from "next/router";
 
-import SearchBar from "../../searchBar/searchBar";
-
-const views = [
-  {
-    label: "Characters",
-    url: "/characters",
-  },
-  { label: "Episodes", url: "/episodes" },
-  { label: "Locations", url: "/locations" },
-  { label: "Favorites", url: "/favorites" },
-];
+import { viewType } from "../../../ts/types/view.type";
 
 type headerDesktopProps = {
   SearchBar: JSX.Element;
+  views: viewType[];
 };
 
 export default function desktopHeader({
   SearchBar,
+  views,
 }: headerDesktopProps): JSX.Element {
   const router = UseRouter();
   const pathname = router.pathname;
-  console.log("router: ", pathname);
-
-  function search(searchQuery: string) {
-    switch (pathname) {
-      case "/characters":
-        router.push({
-          pathname: "/characters",
-          query: { name: searchQuery },
-        });
-    }
-  }
 
   UseEffect(() => {
     const navbar = document.getElementById("nav");

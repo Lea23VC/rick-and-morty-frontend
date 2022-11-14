@@ -33,7 +33,7 @@ export default function characterBox({
   return (
     <Box>
       <Box
-        className=""
+        className="cursor-pointer"
         onClick={() => {
           console.log("char: ", character.id);
           setCurrentCharacterID(character.id);

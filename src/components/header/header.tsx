@@ -17,7 +17,7 @@ const views: viewType[] = [
     },
   },
   { label: "Episodes", url: "/episodes" },
-  { label: "Locations", url: "/locations" },
+
   { label: "Favorites", url: "/favorites" },
 ];
 
@@ -43,7 +43,7 @@ export default function header(): JSX.Element {
       className="transition-colors duration-300 fixed w-[100%] z-10 "
     >
       <Box className="hidden sm:block ">
-        <DesktopHeader SearchBar={SearchBarComponent} />
+        <DesktopHeader SearchBar={SearchBarComponent} views={views} />
       </Box>
 
       <Box className="block sm:hidden">
