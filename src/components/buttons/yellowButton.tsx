@@ -13,7 +13,7 @@ export default function yellowButton({ onClick, label }: buttonProps) {
       <Button
         onClick={() => onClick()}
         variant="contained"
-        color="secondary"
+        color="primary"
         sx={{ borderWith: "2px", borderColor: "#000" }}
       >
         <Typography

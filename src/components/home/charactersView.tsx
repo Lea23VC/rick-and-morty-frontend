@@ -26,6 +26,9 @@ import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import CHARACTER_QUERY from "../../Graphql/Queries/Characters.graphql";
 
 import CharacterModal from "../characters/characterModal";
+
+import { useRouter as UseRouter } from "next/router";
+
 // const CharacterModal = dynamic(() => import("../characters/characterModal"), {
 //   suspense: true,
 // });
@@ -60,13 +63,16 @@ export default function charactersView({
   const [currentCharacterID, setCurrentCharacterID] = UseState<
     Number | undefined
   >();
+
+  const router = UseRouter();
+  console.log("test: ", router.query.name);
+
   const [open, setOpen] = UseState(false);
   const [paginationInfo, setPaginationInfo] = UseState(info);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setCurrentCharacterID(undefined);
     setOpen(false);
-    console.log("Close??");
   };
 
   const [queryVariables, setQueryVariables] = UseState<{
@@ -77,8 +83,13 @@ export default function charactersView({
     withMoreData: false,
   });
 
+  UseEffect(() => {
+    if (!router.isReady) return;
+    setQueryVariables({ ...queryVariables, ...router.query });
+  }, [router.isReady, router.query]);
+
   const [page, setPage] = UseState(1);
-  console.log("Page: ", page);
+
   const [currentCharacters, setCurrentCharacters] = UseState(characters);
 
   const [loadCharacters, { loading, data, error, called, refetch }] =
@@ -86,7 +97,12 @@ export default function charactersView({
 
   UseEffect(() => {
     console.log("query variables: ", queryVariables);
-    if (page != 1 || called || queryVariables.name)
+    if (
+      page != 1 ||
+      called ||
+      queryVariables.name ||
+      Object.keys(router.query).length > 0
+    )
       loadCharacters({ variables: queryVariables }).then((data) => {
         const results: character[] = data.data.characters.results;
         setCurrentCharacters(results);
@@ -108,8 +124,8 @@ export default function charactersView({
           Characters
         </Typography>
       </Box>
-      <Box className="p-4">
-        <SearchBar onClick={searchByName} />
+      <Box className="p-4 bg-transparent-black m-4">
+        <SearchBar onClick={searchByName} label="Enter a character name" />
       </Box>
 
       <Container className="py-10">

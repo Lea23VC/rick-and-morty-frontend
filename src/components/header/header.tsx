@@ -4,6 +4,10 @@ import Typography from "@mui/material/Typography";
 import { useEffect as UseEffect, useRef as UseRef } from "react";
 import Link from "next/link";
 import { useRouter as UseRouter } from "next/router";
+import { useState as UseState } from "react";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import SearchBar from "../searchBar/searchBar";
 
 const views = [
   {
@@ -16,8 +20,19 @@ const views = [
 ];
 
 export default function header(): JSX.Element {
-  const pathname = UseRouter().pathname;
+  const router = UseRouter();
+  const pathname = router.pathname;
   console.log("router: ", pathname);
+
+  function search(searchQuery: string) {
+    switch (pathname) {
+      case "/characters":
+        router.push({
+          pathname: "/characters",
+          query: { name: searchQuery },
+        });
+    }
+  }
 
   UseEffect(() => {
     const navbar = document.getElementById("nav");
@@ -53,7 +68,7 @@ export default function header(): JSX.Element {
             <Link key={index} href={view.url}>
               <Box>
                 <Typography
-                  className={`font-eurostile text-sm sm:text-lg md:text-xl font-bold text-shadow-main ${
+                  className={`font-eurostile text-xs sm:text-md md:text-lg font-bold text-shadow-main ${
                     pathname == view.url && "text-main-yellow"
                   } `}
                   variant="button"
@@ -63,6 +78,19 @@ export default function header(): JSX.Element {
               </Box>
             </Link>
           ))}
+        </Box>
+        <Box className="self-center px-2">
+          <SearchBar label="Search..." width={80} onClick={search} />
+          {/* <IconButton
+            className="items-center"
+            type="submit"
+            aria-label="search"
+            onClick={() => {
+              console.log("BBB");
+            }}
+          >
+            <SearchIcon color="secondary" sx={{ fontSize: 30 }} />
+          </IconButton> */}
         </Box>
       </Box>
     </header>

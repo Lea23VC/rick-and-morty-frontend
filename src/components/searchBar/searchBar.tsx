@@ -35,34 +35,35 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 type searchBarProps = {
   onClick: (name: string) => void;
+  width?: number;
+  label: string;
 };
 
-export default function searchBar({ onClick }: searchBarProps) {
+export default function searchBar({ onClick, width, label }: searchBarProps) {
   const [searchQuery, setSearchQuery] = UseState("");
   //   const dataFiltered = filterData(searchQuery, data);
 
   return (
-    <div className="bg-transparent-black p-4 flex justify-center">
+    <div className="flex justify-center">
       <StyledTextField
         id="search-bar"
         onInput={(e) => {
           const target = e.target as HTMLTextAreaElement;
-          console.log(target.value);
+
           setSearchQuery(target.value);
         }}
         onKeyDown={(e) => {
           if (e.keyCode == 13) onClick(searchQuery);
         }}
-        label="Enter a character name"
+        label={label}
         variant="outlined"
         size="small"
-        className="w-[70%] bg-white"
+        className={`bg-white w-[70%]`}
       />
       <IconButton
         type="submit"
         aria-label="search"
         onClick={() => {
-          console.log("BBB");
           onClick(searchQuery);
         }}
       >

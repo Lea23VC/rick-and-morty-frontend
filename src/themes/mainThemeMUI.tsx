@@ -36,7 +36,7 @@ export const theme = createTheme({
       light: "#ffcd0d",
       main: "#ffcd0d",
       dark: "#ffcd0d",
-      contrastText: "#fff",
+      contrastText: "#000",
     },
     neutral: {
       main: "#64748B",
@@ -44,7 +44,7 @@ export const theme = createTheme({
     },
     secondary: {
       light: "#ffcd0d",
-      main: "#ffcd0d",
+      main: "#00ffea",
       dark: "#ffcd0d",
       contrastText: "#000",
     },
