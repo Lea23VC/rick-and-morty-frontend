@@ -125,7 +125,7 @@ export default function favoritesView() {
   return (
     <ViewLayout title={title} searchAction={onSearch}>
       <Box className="flex flex-col md:flex-row gap-10">
-        <Box className="pt-20 w-[100%] md:w-[50%]">
+        <Box className="pt-10 w-[100%] md:w-[50%]">
           <Box className="py-4">
             <Typography className="font-eurostile font-bold text-lg sm:text-xl md:text-2xl uppercase text-shadow-main text-white text-center">
               Characters
@@ -142,7 +142,7 @@ export default function favoritesView() {
             />
           </Container>
         </Box>
-        <Box className="pt-20 w-[100%] md:w-[50%]">
+        <Box className="pt-10 w-[100%] md:w-[50%]">
           <Box className="py-4">
             <Typography className="font-eurostile font-bold text-lg sm:text-xl md:text-2xl uppercase text-shadow-main text-white text-center">
               Episodes

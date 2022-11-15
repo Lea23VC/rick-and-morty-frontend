@@ -27,13 +27,10 @@ export default function header(): JSX.Element {
   const pathname = router.pathname;
 
   function search(searchQuery: string) {
-    switch (pathname) {
-      case "/characters":
-        router.push({
-          pathname: "/characters",
-          query: { name: searchQuery },
-        });
-    }
+    router.push({
+      pathname: pathname,
+      query: { name: searchQuery },
+    });
   }
 
   const SearchBarComponent = <SearchBar label="Search..." onClick={search} />;

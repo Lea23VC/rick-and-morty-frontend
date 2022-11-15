@@ -33,11 +33,9 @@ export default function charactersView({
     if (!router.isReady) return;
 
     if (router.query.name) {
-      setTitle(
-        router.query.name != ""
-          ? "Searching characters: " + router.query.name + "..."
-          : "Characters"
-      );
+      setTitle("Searching characters: " + router.query.name + "...");
+    } else {
+      setTitle("Characters");
     }
 
     setQueryVariables({ ...queryVariables, ...router.query });
