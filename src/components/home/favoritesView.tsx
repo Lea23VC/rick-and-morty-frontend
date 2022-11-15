@@ -20,6 +20,8 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { characterInitialData } from "../../ts/types/character.types";
 import { episodeInitialData } from "../../ts/types/episode.types";
 
+import { searchValuesinArray } from "../../utils/searchValuesInArray";
+
 export default function favoritesView() {
   const [loadingChapters, setLoadingChapters] = UseState<boolean>(true);
   const [loadingEpisodes, setLoadingEpisodes] = UseState<boolean>(true);
@@ -30,44 +32,56 @@ export default function favoritesView() {
   const [loadEpisodes] = UseLazyQuery(EPISODES_BY_IDS_QUERY);
 
   const [characters, setCharacters] = UseState<characterInitialData[]>([]);
+  const [currentCharacters, setCurrentCharacters] = UseState<
+    characterInitialData[]
+  >([]);
 
   const [episodes, setEpisodes] = UseState<episodeInitialData[]>([]);
+  const [currentEpisodes, setCurrentEpisodes] = UseState<episodeInitialData[]>(
+    []
+  );
 
   UseEffect(() => {
     if (typeof window !== "undefined") {
       const char_ids = Object.keys(
         JSON.parse(localStorage.getItem("characters") || "{}")
       );
-
       const eps_ids = Object.keys(
         JSON.parse(localStorage.getItem("episodes") || "{}")
       );
-
       loadCharacters({ variables: { ids: char_ids } }).then(({ data }) => {
-        setCharacters(
-          data.charactersByIds[0].id != null ? data.charactersByIds : []
-        );
+        const chars =
+          data.charactersByIds[0].id != null ? data.charactersByIds : [];
+        setCharacters(chars);
+        setCurrentCharacters(chars);
         setLoadingChapters(false);
       });
 
       loadEpisodes({ variables: { ids: eps_ids } }).then(({ data }) => {
-        setEpisodes(data.episodesByIds[0].id != null ? data.episodesByIds : []);
+        const eps = data.episodesByIds[0].id != null ? data.episodesByIds : [];
+        setCurrentEpisodes(eps);
+        setEpisodes(eps);
         setLoadingEpisodes(false);
       });
     }
   }, []);
 
   function onSearch(searchValue: string) {
-    searchValues(searchValue, characters, setCharacters);
-    searchValues(searchValue, episodes, setEpisodes);
+    setCurrentEpisodes(
+      searchValuesinArray(searchValue, episodes) as SetStateAction<
+        episodeInitialData[]
+      >
+    );
+    setCurrentCharacters(
+      searchValuesinArray(searchValue, characters) as SetStateAction<
+        characterInitialData[]
+      >
+    );
   }
 
   function searchValues(
     searchValue: string,
-    values: characterInitialData[] | episodeInitialData[],
-    setValue:
-      | Dispatch<SetStateAction<characterInitialData[]>>
-      | Dispatch<SetStateAction<episodeInitialData[]>>
+    values: characterInitialData[] | episodeInitialData[]
   ) {
     const filtered = (values as any[])
       .filter(
@@ -79,12 +93,14 @@ export default function favoritesView() {
         (filteredName: characterInitialData | episodeInitialData) =>
           filteredName
       ) as characterInitialData[] | episodeInitialData[];
-    setValue(filtered as any);
+    // setValue(filtered as any);
+
+    return filtered;
   }
 
   return (
     <ViewLayout title="Favorites" searchAction={onSearch}>
-      <Container className="flex flex-col md:flex-row gap-10">
+      <Box className="flex flex-col md:flex-row gap-10">
         <Box className="pt-20 w-[100%] md:w-[50%]">
           <Box className="py-4">
             <Typography className="font-eurostile font-bold text-lg sm:text-xl md:text-2xl uppercase text-shadow-main text-white text-center">
@@ -93,12 +109,12 @@ export default function favoritesView() {
           </Box>
           <Container>
             <CharactersGrid
-              characters={characters}
+              characters={currentCharacters}
               loading={loadingChapters}
               xs={6}
               md={6}
               lg={6}
-              spacing={{ xs: 3, sm: 3, md: 3 }}
+              spacing={{ xs: 2, sm: 2, md: 2 }}
             />
           </Container>
         </Box>
@@ -108,15 +124,17 @@ export default function favoritesView() {
               Episodes
             </Typography>
           </Box>
-          <EpisodesGrid
-            episodes={episodes}
-            loading={loadingEpisodes}
-            xs={6}
-            md={6}
-            lg={6}
-          />
+          <Container>
+            <EpisodesGrid
+              episodes={currentEpisodes}
+              loading={loadingEpisodes}
+              xs={12}
+              md={12}
+              lg={12}
+            />
+          </Container>
         </Box>
-      </Container>
+      </Box>
     </ViewLayout>
   );
 }

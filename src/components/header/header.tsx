@@ -9,6 +9,7 @@ import { viewType } from "../../ts/types/view.type";
 import SearchBar from "../searchBar/searchBar";
 
 const views: viewType[] = [
+  { label: "Home", url: "/" },
   {
     label: "Characters",
     url: "/characters",

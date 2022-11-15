@@ -16,6 +16,8 @@ import { episodeInitialData } from "../../ts/types/episode.types";
 import EpisodeBox from "../episodes/episodeBox";
 import EpisodeModal from "../episodes/episodeModal";
 
+import MessageError from "../messages/emptyErrorMessage";
+
 type episodesGridProp = {
   episodes: episodeInitialData[];
   info?: pagination;
@@ -88,7 +90,9 @@ export default function episodesGrid({
           episodeID={currentEpisodeID}
         />
       </Grid>
-
+      <Box>
+        {episodes.length == 0 && <MessageError message="No episodes..." />}
+      </Box>
       {onPagination && info && (
         <Pagination
           page={page}

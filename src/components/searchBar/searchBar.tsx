@@ -3,6 +3,8 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
+import CloseIcon from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   fontFamily: "Eurostile",
@@ -35,6 +37,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 type searchBarProps = {
   onClick: (name: string) => void;
+
   width?: number;
   label: string;
 };
@@ -44,8 +47,9 @@ export default function searchBar({ onClick, width, label }: searchBarProps) {
   //   const dataFiltered = filterData(searchQuery, data);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center items-center">
       <StyledTextField
+        value={searchQuery}
         id="search-bar"
         onInput={(e) => {
           const target = e.target as HTMLTextAreaElement;
@@ -60,15 +64,32 @@ export default function searchBar({ onClick, width, label }: searchBarProps) {
         size="small"
         className={`bg-white w-[70%]`}
       />
-      <IconButton
-        type="submit"
-        aria-label="search"
-        onClick={() => {
-          onClick(searchQuery);
-        }}
-      >
-        <SearchIcon color="primary" />
-      </IconButton>
+      <Box className="flex">
+        <IconButton
+          type="submit"
+          aria-label="search"
+          onClick={() => {
+            onClick(searchQuery);
+          }}
+        >
+          <SearchIcon color="primary" />
+        </IconButton>
+        <IconButton
+          size="large"
+          edge="start"
+          color="primary"
+          aria-label="menu"
+          sx={{ mr: 2 }}
+          onClick={() => {
+            console.log("fdf");
+            setSearchQuery("");
+            onClick("");
+          }}
+          className="float-right"
+        >
+          <CloseIcon />
+        </IconButton>
+      </Box>
     </div>
   );
 }
