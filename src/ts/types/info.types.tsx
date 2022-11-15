@@ -1,6 +1,6 @@
 export type info = {
   label: string;
-  value: string;
+  value: string | Date;
 };
 
 export type pagination = {

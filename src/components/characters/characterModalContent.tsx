@@ -81,7 +81,7 @@ export default function characterModalContent({
                   className="font-eurostile text-white inline text-xl"
                   variant="body1"
                 >
-                  {character.value}
+                  {character.value as string}
                 </Typography>
               </Box>
             ))}

@@ -6,13 +6,13 @@ export type episode = {
   id: Number;
   episode: string;
   info?: info[];
-  characters?: character[];
+  characters?: characterInitialData[];
 };
 export type episodeInitialData = {
   __typename: string;
   id: Number;
   name: string;
-  air_data: string;
+  air_date: string;
   episode: string;
   created: Date;
   characters?: characterInitialData[];

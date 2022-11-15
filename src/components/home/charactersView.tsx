@@ -20,6 +20,8 @@ import { useRouter as UseRouter } from "next/router";
 
 import Pagination from "../pagination/pagination";
 
+import CharactersGrid from "../../components/characters/charactersGrid";
+
 type characterViewProps = {
   characters: characterInitialData[];
   info: pagination;
@@ -34,7 +36,6 @@ export default function charactersView({
   >();
 
   const router = UseRouter();
-  console.log("test: ", router.query.name);
 
   const [open, setOpen] = UseState(false);
   const [paginationInfo, setPaginationInfo] = UseState(info);
@@ -57,13 +58,13 @@ export default function charactersView({
     setQueryVariables({ ...queryVariables, ...router.query });
   }, [router.isReady, router.query]);
 
-  const [page, setPage] = UseState(1);
-
   const [currentCharacters, setCurrentCharacters] =
     UseState<characterInitialData[]>(characters);
 
   const [loadCharacters, { loading, data, error, called, refetch }] =
     UseLazyQuery(CHARACTER_QUERY);
+
+  const [page, setPage] = UseState(1);
 
   UseEffect(() => {
     if (
@@ -84,6 +85,11 @@ export default function charactersView({
     setPage(1);
   }
 
+  function onPagination(page: number): void {
+    setQueryVariables({ ...queryVariables, page: page });
+    setPage(2);
+  }
+
   return (
     <ViewLayout
       title="Characters"
@@ -91,36 +97,11 @@ export default function charactersView({
       loading={loading}
     >
       <Container className="py-10">
-        {loading ? (
-          <Box className="min-w-[100vh] ">
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Grid container spacing={5} className="place-content-center">
-            {currentCharacters.map((character, index) => (
-              <Grid item xs={6} md={3} lg={2} key={index} className="relative">
-                <CharacterBox
-                  character={character}
-                  handleOpen={handleOpen}
-                  setCurrentCharacterID={setCurrentCharacterID}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        )}
-        <Pagination
-          page={page}
-          paginationInfo={paginationInfo}
-          onChange={(page) => {
-            setPage(page);
-            setQueryVariables({ ...queryVariables, page: page });
-          }}
-        />
-
-        <CharacterModal
-          open={open}
-          handleClose={handleClose}
-          characterID={currentCharacterID}
+        <CharactersGrid
+          characters={currentCharacters}
+          info={info}
+          loading={loading}
+          onPagination={onPagination}
         />
       </Container>
     </ViewLayout>

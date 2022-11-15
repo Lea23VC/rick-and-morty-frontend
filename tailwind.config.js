@@ -38,6 +38,7 @@ module.exports = {
     },
   },
   plugins: [
+    require("tailwind-scrollbar")({ nocompatible: true }),
     plugin(function ({ matchUtilities, theme }) {
       matchUtilities(
         {

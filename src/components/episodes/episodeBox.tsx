@@ -17,7 +17,7 @@ export default function episodeBox({
 }: episodeBoxProps) {
   return (
     <Box
-      className=""
+      className="cursor-pointer"
       onClick={() => {
         console.log("episode: ", episode.id);
         setCurrentEpisodeID(episode.id);

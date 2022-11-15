@@ -1,14 +1,9 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
 
 import Grid from "@mui/material/Grid";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
+import Pagination from "../../components/pagination/pagination";
 import CircularProgress from "@mui/material/CircularProgress";
-
-import SearchBar from "../searchBar/searchBar";
 
 import { pagination } from "../../ts/types/info.types";
 import { useState as UseState, useEffect as UseEffect } from "react";
@@ -24,32 +19,14 @@ import EpisodeBox from "../../components/episodes/episodeBox";
 
 import EpisodeModal from "../../components/episodes/episodeModal";
 
-// const CharacterModal = dynamic(() => import("../characters/characterModal"), {
-//   suspense: true,
-// });
+import ViewLayout from "../../components/layouts/viewLayout";
+
+import EpisodesGrid from "../../components/episodes/episodesGrid";
+
 type episodesViewProps = {
   episodes: episodeInitialData[];
   info: pagination;
 };
-
-type queryVars = {
-  withMoreData: boolean;
-  page: number;
-  name: string;
-};
-
-const StyledPagination = styled(Pagination)(({ theme }) => ({
-  padding: "20px 0 10px",
-  [`& .MuiPaginationItem-text`]: {
-    color: "white !important",
-    fontFamily: "Eurostile",
-    fontSize: 16,
-    textShadow: "0 0 7px rgba(99,253,251,0.54)",
-  },
-  [`& .MuiPaginationItem-ellipsis`]: {
-    fontFamily: "Roboto",
-  },
-}));
 
 export default function charactersView({
   episodes,
@@ -112,61 +89,22 @@ export default function charactersView({
     setPage(1);
   }
 
+  function onPagination(page: number): void {
+    setQueryVariables({ ...queryVariables, page: page });
+    setPage(2);
+  }
+
   return (
-    <Box className="sm:pt-4 md:pt-8">
-      <Box>
-        <Typography className="font-eurostile font-bold text-3xl sm:text-4xl md:text-5xl text-center uppercase text-shadow-main text-white">
-          Episodes
-        </Typography>
-      </Box>
-      <Box className="p-4 bg-transparent-black m-4">
-        <SearchBar onClick={searchByName} label="Enter a character name" />
-      </Box>
-
+    <ViewLayout title="Episodes" searchAction={searchByName} loading={loading}>
       <Container className="py-10">
-        {loading ? (
-          <Box className="min-w-[100vh] ">
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Grid container className="place-content-center ">
-            {currentEpisodes.map((episode, index) => (
-              <Grid
-                item
-                xs={6}
-                md={3}
-                lg={3}
-                key={index}
-                className="relative border  border-light-blue border-solid shadow-main bg-transparent-black p-4 "
-              >
-                <EpisodeBox
-                  episode={episode}
-                  handleOpen={handleOpen}
-                  setCurrentEpisodeID={setCurrentEpisodeID}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        )}
-
-        <Stack spacing={2} justifyContent="center" alignItems="center">
-          <StyledPagination
-            count={paginationInfo.pages}
-            color="primary"
-            defaultPage={1}
-            page={page}
-            onChange={(e, page) => {
-              setPage(page);
-              setQueryVariables({ ...queryVariables, page: page });
-            }}
-          />
-        </Stack>
-        <EpisodeModal
-          open={open}
-          handleClose={handleClose}
-          episodeID={currentEpisodeID}
+        <EpisodesGrid
+          xs={3}
+          episodes={currentEpisodes}
+          info={info}
+          loading={loading}
+          onPagination={onPagination}
         />
       </Container>
-    </Box>
+    </ViewLayout>
   );
 }
