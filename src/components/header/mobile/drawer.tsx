@@ -4,6 +4,7 @@ import {
   KeyboardEvent,
   MouseEvent,
 } from "react";
+import Link from "next/link";
 
 import { useRouter as UseRouter } from "next/router";
 import Typography from "@mui/material/Typography";
@@ -68,21 +69,23 @@ export default function SwipeableTemporaryDrawer({
         </IconButton>
 
         {views.map((text, index) => (
-          <ListItem key={text.label} disablePadding>
-            <ListItemButton>
-              <ListItemText
-                primary={
-                  <Typography
-                    className={`text-white font-eurostile text-xl sm:text-md md:text-lg font-bold text-shadow-main ${
-                      pathname == text.url && "text-main-yellow"
-                    }`}
-                  >
-                    {text.label}
-                  </Typography>
-                }
-              />
-            </ListItemButton>
-          </ListItem>
+          <Link key={index} href={text.url}>
+            <ListItem key={text.label} disablePadding>
+              <ListItemButton>
+                <ListItemText
+                  primary={
+                    <Typography
+                      className={`text-white font-eurostile text-xl sm:text-md md:text-lg font-bold text-shadow-main ${
+                        pathname == text.url && "text-main-yellow"
+                      }`}
+                    >
+                      {text.label}
+                    </Typography>
+                  }
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
 
