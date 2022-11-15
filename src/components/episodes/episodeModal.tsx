@@ -18,6 +18,8 @@ import CharacterBox from "../characters/characterBox";
 
 import CharacterGrid from "../characters/charactersGrid";
 
+import EpisodeModalContent from "../episodes/episodeModalContent";
+
 type modalProps = {
   open: boolean;
   handleClose: () => void;
@@ -63,48 +65,7 @@ export default function characterModal({
             <CircularProgress />
           </Container>
         ) : (
-          <Box>
-            <Typography
-              variant="h1"
-              className="font-eurostile font-bold text-light-blue text-3xl pb-2"
-            >
-              {episodeData.name}
-            </Typography>
-            {episodeData.info?.map((episode, index) => (
-              <Box key={index}>
-                <Typography
-                  className="font-eurostile font-bold text-white inline text-xl"
-                  variant="body1"
-                >
-                  {episode.label + ": "}
-                </Typography>
-                <Typography
-                  className="font-eurostile text-white inline text-xl"
-                  variant="body1"
-                >
-                  {episode.value as string}
-                </Typography>
-              </Box>
-            ))}
-            {episodeData.characters && (
-              <Box>
-                <Box className="py-4">
-                  <Typography className="font-eurostile font-bold text-lg sm:text-xl md:text-2xl uppercase text-shadow-main text-white">
-                    Characters
-                  </Typography>
-                </Box>
-
-                <Grid container>
-                  <CharacterGrid
-                    characters={episodeData.characters}
-                    spacing={0}
-                    md={2}
-                    xs={6}
-                  />
-                </Grid>
-              </Box>
-            )}
-          </Box>
+          <EpisodeModalContent episodeData={episodeData} />
         )}
       </Box>
     </Modal>

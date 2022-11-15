@@ -1,25 +1,11 @@
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-
-import Grid from "@mui/material/Grid";
-import CharacterBox from "../characters/characterBox";
-import CircularProgress from "@mui/material/CircularProgress";
-
 import { characterInitialData } from "../../ts/types/character.types";
 import { pagination } from "../../ts/types/info.types";
 import { useState as UseState, useEffect as UseEffect } from "react";
-
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import CHARACTER_QUERY from "../../Graphql/Queries/Characters.graphql";
-
-import CharacterModal from "../characters/characterModal";
-
 import ViewLayout from "../layouts/viewLayout";
-
 import { useRouter as UseRouter } from "next/router";
-
-import Pagination from "../pagination/pagination";
-
 import CharactersGrid from "../../components/characters/charactersGrid";
 
 type characterViewProps = {
@@ -31,19 +17,9 @@ export default function charactersView({
   characters,
   info,
 }: characterViewProps): JSX.Element {
-  const [currentCharacterID, setCurrentCharacterID] = UseState<
-    Number | undefined
-  >();
-
   const router = UseRouter();
 
-  const [open, setOpen] = UseState(false);
   const [paginationInfo, setPaginationInfo] = UseState(info);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setCurrentCharacterID(undefined);
-    setOpen(false);
-  };
 
   const [queryVariables, setQueryVariables] = UseState<{
     name?: string;
@@ -61,7 +37,7 @@ export default function charactersView({
   const [currentCharacters, setCurrentCharacters] =
     UseState<characterInitialData[]>(characters);
 
-  const [loadCharacters, { loading, data, error, called, refetch }] =
+  const [loadCharacters, { loading, error, called }] =
     UseLazyQuery(CHARACTER_QUERY);
 
   const [page, setPage] = UseState(1);
@@ -99,9 +75,12 @@ export default function charactersView({
       <Container className="py-10">
         <CharactersGrid
           characters={currentCharacters}
-          info={info}
+          info={paginationInfo}
           loading={loading}
           onPagination={onPagination}
+          xs={6}
+          md={3}
+          lg={2}
         />
       </Container>
     </ViewLayout>

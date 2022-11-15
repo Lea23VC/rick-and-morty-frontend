@@ -6,16 +6,10 @@ import client from "../apollo-client";
 import { ApolloQueryResult } from "@apollo/client";
 import MainTitle from "../src/components/home/mainTitle";
 import CharacterView from "../src/components/home/charactersView";
-import { GetStaticProps } from "next";
 
-import {
-  characterInitialData,
-  character,
-} from "../src/ts/types/character.types";
+import { characterInitialData } from "../src/ts/types/character.types";
 
 import { pagination } from "../src/ts/types/info.types";
-
-import Header from "../src/components/header/header";
 
 type graphqlResponse = {
   characters: {
@@ -28,24 +22,22 @@ type graphqlResponse = {
 };
 
 type homeProps = {
-  characters: character[];
+  characters: characterInitialData[];
   queryInfo: pagination;
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+Characters.getInitialProps = async (ctx: any) => {
   const characters: ApolloQueryResult<graphqlResponse> = await client.query({
     query: CHARACTERS_QUERY,
     variables: { withMoreData: false },
   });
   return {
-    props: {
-      characters: characters.data.characters.results,
-      queryInfo: characters.data.characters.info,
-    },
+    characters: characters.data.characters.results,
+    queryInfo: characters.data.characters.info,
   };
 };
 
-export default function Home({
+export default function Characters({
   characters,
   queryInfo,
 }: homeProps): JSX.Element {

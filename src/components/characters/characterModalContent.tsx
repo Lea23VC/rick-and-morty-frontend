@@ -1,12 +1,8 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
 import Image from "next/image";
-
 import Button from "../buttons/yellowButton";
-
 import { character } from "../../ts/types/character.types";
-
 import { useEffect as UseEffect, useState as UseState } from "react";
 
 type characterModalContent = {

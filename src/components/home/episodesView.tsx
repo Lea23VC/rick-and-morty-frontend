@@ -1,26 +1,11 @@
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-
-import Grid from "@mui/material/Grid";
-import Pagination from "../../components/pagination/pagination";
-import CircularProgress from "@mui/material/CircularProgress";
-
+import { episodeInitialData } from "../../ts/types/episode.types";
 import { pagination } from "../../ts/types/info.types";
 import { useState as UseState, useEffect as UseEffect } from "react";
-
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import EPISODES_QUERY from "../../Graphql/Queries/Episodes.graphql";
-
-import { useRouter as UseRouter } from "next/router";
-
-import { episodeInitialData } from "../../ts/types/episode.types";
-
-import EpisodeBox from "../../components/episodes/episodeBox";
-
-import EpisodeModal from "../../components/episodes/episodeModal";
-
 import ViewLayout from "../../components/layouts/viewLayout";
-
+import { useRouter as UseRouter } from "next/router";
 import EpisodesGrid from "../../components/episodes/episodesGrid";
 
 type episodesViewProps = {
@@ -32,21 +17,9 @@ export default function charactersView({
   episodes,
   info,
 }: episodesViewProps): JSX.Element {
-  console.log("episodes: ", episodes);
-  const [currentEpisodeID, setCurrentEpisodeID] = UseState<
-    Number | undefined
-  >();
-
   const router = UseRouter();
-  console.log("test: ", router.query.name);
 
-  const [open, setOpen] = UseState(false);
   const [paginationInfo, setPaginationInfo] = UseState(info);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setCurrentEpisodeID(undefined);
-    setOpen(false);
-  };
 
   const [queryVariables, setQueryVariables] = UseState<{
     name?: string;
@@ -65,7 +38,7 @@ export default function charactersView({
 
   const [currentEpisodes, setCurrentEpisodes] = UseState(episodes);
 
-  const [loadEpisodes, { loading, data, error, called, refetch }] =
+  const [loadEpisodes, { loading, error, called }] =
     UseLazyQuery(EPISODES_QUERY);
 
   UseEffect(() => {
@@ -79,7 +52,6 @@ export default function charactersView({
       loadEpisodes({ variables: queryVariables }).then((data) => {
         const results: episodeInitialData[] = data.data.episodes.results;
         setCurrentEpisodes(results);
-        console.log("Results: ", results);
         setPaginationInfo(data.data.episodes.info);
       });
   }, [queryVariables]);
@@ -100,7 +72,7 @@ export default function charactersView({
         <EpisodesGrid
           xs={3}
           episodes={currentEpisodes}
-          info={info}
+          info={paginationInfo}
           loading={loading}
           onPagination={onPagination}
         />
