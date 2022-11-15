@@ -31,6 +31,15 @@ export default function charactersView({
 
   UseEffect(() => {
     if (!router.isReady) return;
+
+    if (router.query.name) {
+      setTitle(
+        router.query.name != ""
+          ? "Searching characters: " + router.query.name + "..."
+          : "Characters"
+      );
+    }
+
     setQueryVariables({ ...queryVariables, ...router.query });
   }, [router.isReady, router.query]);
 
@@ -41,6 +50,8 @@ export default function charactersView({
     UseLazyQuery(CHARACTER_QUERY);
 
   const [page, setPage] = UseState(1);
+
+  const [title, setTitle] = UseState("Characters");
 
   UseEffect(() => {
     if (
@@ -57,6 +68,9 @@ export default function charactersView({
   }, [queryVariables]);
 
   function searchByName(name: string): void {
+    setTitle(
+      name != "" ? "Searching characters: " + name + "..." : "Characters"
+    );
     setQueryVariables({ ...queryVariables, page: 1, name: name });
     setPage(1);
   }
@@ -67,7 +81,7 @@ export default function charactersView({
   }
 
   return (
-    <ViewLayout title="Characters" searchAction={searchByName}>
+    <ViewLayout title={title} searchAction={searchByName}>
       <Container className="py-10">
         <CharactersGrid
           characters={currentCharacters}

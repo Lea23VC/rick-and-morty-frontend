@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import SearchBar from "../searchBar/searchBar";
+import { useEffect as UseEffect } from "react";
+import { useRouter as UseRouter } from "next/router";
 
 type layoutProps = {
   title: string;
@@ -9,6 +11,13 @@ type layoutProps = {
 };
 
 export default function Layout({ children, searchAction, title }: layoutProps) {
+  const router = UseRouter();
+
+  UseEffect(() => {
+    if (!router.isReady) return;
+    const titleElement = document.getElementById("nav");
+  }, [router.isReady, router.query]);
+
   function searchLabel(): string {
     switch (title) {
       case "Characters":
@@ -25,7 +34,10 @@ export default function Layout({ children, searchAction, title }: layoutProps) {
   return (
     <Box className="sm:py-4 md:py-8">
       <Box>
-        <Typography className="font-eurostile font-bold text-3xl sm:text-4xl md:text-5xl text-center uppercase text-shadow-main text-white">
+        <Typography
+          id="title"
+          className="font-eurostile font-bold text-3xl sm:text-4xl md:text-5xl text-center uppercase text-shadow-main text-white"
+        >
           {title}
         </Typography>
       </Box>

@@ -1,6 +1,5 @@
 import ViewLayout from "../layouts/viewLayout";
 import {
-  Dispatch,
   SetStateAction,
   useEffect as UseEffect,
   useState as UseState,
@@ -8,23 +7,36 @@ import {
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import CHARACTERS_BY_IDS_QUERY from "../../Graphql/Queries/CharactersByIds.graphql";
 import EPISODES_BY_IDS_QUERY from "../../Graphql/Queries/EpisodesByIds.graphql";
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 import CharactersGrid from "../characters/charactersGrid";
 import EpisodesGrid from "../episodes/episodesGrid";
-import Grid from "@mui/material/Unstable_Grid2";
 
 import { characterInitialData } from "../../ts/types/character.types";
 import { episodeInitialData } from "../../ts/types/episode.types";
 
 import { searchValuesinArray } from "../../utils/searchValuesInArray";
 
+import { useRouter as UseRouter } from "next/router";
+
 export default function favoritesView() {
+  const router = UseRouter();
+
+  const [queryVariables, setQueryVariables] = UseState<{
+    name?: string;
+  }>({});
+
   const [loadingChapters, setLoadingChapters] = UseState<boolean>(true);
   const [loadingEpisodes, setLoadingEpisodes] = UseState<boolean>(true);
+
+  UseEffect(() => {
+    if (!router.isReady) return;
+
+    onSearch(router.query.name ? (router.query.name as string) : "");
+    // setQueryVariables({ ...queryVariables, ...router.query });
+  }, [router.isReady, router.query, loadingChapters, loadingEpisodes]);
 
   const [loadCharacters, { error, called }] = UseLazyQuery(
     CHARACTERS_BY_IDS_QUERY
@@ -40,6 +52,12 @@ export default function favoritesView() {
   const [currentEpisodes, setCurrentEpisodes] = UseState<episodeInitialData[]>(
     []
   );
+
+  const [title, setTitle] = UseState("Favorites");
+  // UseEffect(() => {
+  //   if (queryVariables.name || Object.keys(router.query).length > 0)
+  //     onSearch(queryVariables.name ? queryVariables.name : "");
+  // }, [currentCharacters, currentEpisodes]);
 
   UseEffect(() => {
     if (typeof window !== "undefined") {
@@ -67,6 +85,12 @@ export default function favoritesView() {
   }, []);
 
   function onSearch(searchValue: string) {
+    setTitle(
+      searchValue != ""
+        ? "Searching favorites: " + searchValue + "..."
+        : "Favorites"
+    );
+
     setCurrentEpisodes(
       searchValuesinArray(searchValue, episodes) as SetStateAction<
         episodeInitialData[]
@@ -99,7 +123,7 @@ export default function favoritesView() {
   }
 
   return (
-    <ViewLayout title="Favorites" searchAction={onSearch}>
+    <ViewLayout title={title} searchAction={onSearch}>
       <Box className="flex flex-col md:flex-row gap-10">
         <Box className="pt-20 w-[100%] md:w-[50%]">
           <Box className="py-4">
