@@ -1,5 +1,10 @@
 import ViewLayout from "../layouts/viewLayout";
-import { useEffect as UseEffect, useState as UseState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect as UseEffect,
+  useState as UseState,
+} from "react";
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import CHARACTERS_BY_IDS_QUERY from "../../Graphql/Queries/CharactersByIds.graphql";
 import EPISODES_BY_IDS_QUERY from "../../Graphql/Queries/EpisodesByIds.graphql";
@@ -9,6 +14,7 @@ import Typography from "@mui/material/Typography";
 
 import CharactersGrid from "../characters/charactersGrid";
 import EpisodesGrid from "../episodes/episodesGrid";
+import Grid from "@mui/material/Unstable_Grid2";
 
 import { characterInitialData } from "../../ts/types/character.types";
 import { episodeInitialData } from "../../ts/types/episode.types";
@@ -50,35 +56,62 @@ export default function favoritesView() {
     }
   }, []);
 
+  function onSearch(searchValue: string) {
+    searchValues(searchValue, characters, setCharacters);
+    searchValues(searchValue, episodes, setEpisodes);
+  }
+
+  function searchValues(
+    searchValue: string,
+    values: characterInitialData[] | episodeInitialData[],
+    setValue:
+      | Dispatch<SetStateAction<characterInitialData[]>>
+      | Dispatch<SetStateAction<episodeInitialData[]>>
+  ) {
+    const filtered = (values as any[])
+      .filter(
+        (value: characterInitialData | episodeInitialData) =>
+          value.name.toLowerCase().includes(searchValue) ||
+          value.name.toUpperCase().includes(searchValue)
+      )
+      .map(
+        (filteredName: characterInitialData | episodeInitialData) =>
+          filteredName
+      ) as characterInitialData[] | episodeInitialData[];
+    setValue(filtered as any);
+  }
+
   return (
-    <ViewLayout title="Favorites">
-      <Box>
-        <Box className="py-4">
-          <Typography className="font-eurostile font-bold text-lg sm:text-xl md:text-2xl uppercase text-shadow-main text-white text-center">
-            Characters
-          </Typography>
+    <ViewLayout title="Favorites" searchAction={onSearch}>
+      <Box className="flex flex-col md:flex-row gap-10">
+        <Box className="pt-20 w-[100%] md:w-[50%]">
+          <Box className="py-4">
+            <Typography className="font-eurostile font-bold text-lg sm:text-xl md:text-2xl uppercase text-shadow-main text-white text-center">
+              Characters
+            </Typography>
+          </Box>
+          <CharactersGrid
+            characters={characters}
+            loading={loadingChapters}
+            xs={6}
+            md={6}
+            lg={6}
+          />
         </Box>
-        <CharactersGrid
-          characters={characters}
-          loading={loadingChapters}
-          xs={6}
-          md={2}
-          lg={2}
-        />
-      </Box>
-      <Box className="pt-20">
-        <Box className="py-4">
-          <Typography className="font-eurostile font-bold text-lg sm:text-xl md:text-2xl uppercase text-shadow-main text-white text-center">
-            Episodes
-          </Typography>
+        <Box className="pt-20 w-[100%] md:w-[50%]">
+          <Box className="py-4">
+            <Typography className="font-eurostile font-bold text-lg sm:text-xl md:text-2xl uppercase text-shadow-main text-white text-center">
+              Episodes
+            </Typography>
+          </Box>
+          <EpisodesGrid
+            episodes={episodes}
+            loading={loadingEpisodes}
+            xs={6}
+            md={6}
+            lg={6}
+          />
         </Box>
-        <EpisodesGrid
-          episodes={episodes}
-          loading={loadingEpisodes}
-          xs={6}
-          md={2}
-          lg={2}
-        />
       </Box>
     </ViewLayout>
   );
