@@ -14,10 +14,6 @@ import { createEpisodeInfoArray } from "../../utils/createEpisodeInfoArray";
 
 import { episode } from "../../ts/types/episode.types";
 
-import CharacterBox from "../characters/characterBox";
-
-import CharacterGrid from "../characters/charactersGrid";
-
 import EpisodeModalContent from "../episodes/episodeModalContent";
 
 type modalProps = {

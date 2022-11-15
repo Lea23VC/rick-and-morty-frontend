@@ -4,17 +4,11 @@ import SearchBar from "../searchBar/searchBar";
 
 type layoutProps = {
   title: string;
-  children: JSX.Element;
+  children?: JSX.Element | null;
   searchAction: (name: string) => void;
-  loading: boolean;
 };
 
-export default function Layout({
-  children,
-  searchAction,
-  title,
-  loading,
-}: layoutProps) {
+export default function Layout({ children, searchAction, title }: layoutProps) {
   function searchLabel(): string {
     switch (title) {
       case "Characters":
@@ -29,7 +23,7 @@ export default function Layout({
   }
 
   return (
-    <Box className="sm:pt-4 md:pt-8">
+    <Box className="sm:py-4 md:py-8">
       <Box>
         <Typography className="font-eurostile font-bold text-3xl sm:text-4xl md:text-5xl text-center uppercase text-shadow-main text-white">
           {title}

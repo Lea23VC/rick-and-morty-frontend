@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import { ResponsiveStyleValue } from "@mui/system";
-import Grid, { GridSize, GridSpacing } from "@mui/material/Grid";
+import { GridSize, GridSpacing } from "@mui/material/Grid";
+import Grid from "@mui/material/Unstable_Grid2";
+
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { pagination } from "../../ts/types/info.types";
@@ -63,10 +65,9 @@ export default function episodesGrid({
           <CircularProgress />
         </Box>
       ) : (
-        <Grid container spacing={5} className="place-content-center ">
+        <Grid container spacing={spacing} className="place-content-center ">
           {episodes.map((episode, index) => (
             <Grid
-              item
               {...gridOptions}
               key={index}
               className="relative border  border-light-blue border-solid shadow-main bg-transparent-black p-4 "

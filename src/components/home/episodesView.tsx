@@ -67,7 +67,7 @@ export default function charactersView({
   }
 
   return (
-    <ViewLayout title="Episodes" searchAction={searchByName} loading={loading}>
+    <ViewLayout title="Episodes" searchAction={searchByName}>
       <Container className="py-10">
         <EpisodesGrid
           xs={3}

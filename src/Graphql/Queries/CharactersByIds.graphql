@@ -1,0 +1,6 @@
+#import "../Fragments/characters/CharacterFragment.graphql"
+query GetCharactersByIds($ids: [ID!]!, $withMoreData: Boolean = false) {
+  charactersByIds(ids: $ids) {
+    ...CharacterData
+  }
+}

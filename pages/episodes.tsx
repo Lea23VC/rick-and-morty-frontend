@@ -49,7 +49,7 @@ export default function Home({ episodes, queryInfo }: homeProps): JSX.Element {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="min-h-screen max-w-screen-lg m-auto">
-        <Box className="pt-32">
+        <Box className="py-32">
           <MainTitle />
           <EpisodesView episodes={episodes} info={queryInfo} />
         </Box>

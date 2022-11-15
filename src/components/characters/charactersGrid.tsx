@@ -1,8 +1,9 @@
 import Box from "@mui/material/Box";
 import { ResponsiveStyleValue } from "@mui/system";
-import Grid, { GridSize, GridSpacing } from "@mui/material/Grid";
+import { GridSize, GridSpacing } from "@mui/material/Grid";
 import CharacterBox from "../characters/characterBox";
 import CircularProgress from "@mui/material/CircularProgress";
+import Grid from "@mui/material/Unstable_Grid2";
 
 import { characterInitialData } from "../../ts/types/character.types";
 import { pagination } from "../../ts/types/info.types";
@@ -10,7 +11,7 @@ import { useState as UseState } from "react";
 
 import CharacterModal from "../characters/characterModal";
 
-import { useRouter as UseRouter } from "next/router";
+import MessageError from "../../components/messages/emptyErrorMessage";
 
 import Pagination from "../pagination/pagination";
 
@@ -59,21 +60,28 @@ export default function charactersGrid({
   return (
     <Box>
       {loading ? (
-        <Box className="min-w-[100vh] ">
+        <Box className="min-w-[100vh] grid items-center">
           <CircularProgress />
         </Box>
       ) : (
-        <Grid container spacing={spacing} className="place-content-center">
-          {characters.map((character, index) => (
-            <Grid item {...gridOptions} key={index} className="relative">
-              <CharacterBox
-                character={character}
-                handleOpen={handleOpen}
-                setCurrentCharacterID={setCurrentCharacterID}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <Box>
+          <Grid container spacing={spacing} className="place-content-center">
+            {characters.map((character, index) => (
+              <Grid {...gridOptions} key={index} className="relative">
+                <CharacterBox
+                  character={character}
+                  handleOpen={handleOpen}
+                  setCurrentCharacterID={setCurrentCharacterID}
+                />
+              </Grid>
+            ))}
+          </Grid>
+          <Box>
+            {characters.length == 0 && (
+              <MessageError message="No characters..." />
+            )}
+          </Box>
+        </Box>
       )}
       <CharacterModal
         open={open}
@@ -81,7 +89,7 @@ export default function charactersGrid({
         characterID={currentCharacterID}
       />
 
-      {onPagination && paginationInfo && (
+      {onPagination && paginationInfo && characters.length > 0 && (
         <Pagination
           page={page}
           paginationInfo={paginationInfo}

@@ -67,17 +67,13 @@ export default function charactersView({
   }
 
   return (
-    <ViewLayout
-      title="Characters"
-      searchAction={searchByName}
-      loading={loading}
-    >
+    <ViewLayout title="Characters" searchAction={searchByName}>
       <Container className="py-10">
         <CharactersGrid
           characters={currentCharacters}
           info={paginationInfo}
-          loading={loading}
           onPagination={onPagination}
+          loading={loading}
           xs={6}
           md={3}
           lg={2}

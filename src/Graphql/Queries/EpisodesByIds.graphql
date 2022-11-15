@@ -1,0 +1,6 @@
+#import "../Fragments/episodes/EpisodeFragment.graphql"
+query GetEpisodesByIds($ids: [ID!]!, $withCharactersData: Boolean = false, $withMoreData: Boolean = false) {
+  episodesByIds(ids: $ids) {
+    ...EpisodeData
+  }
+}
