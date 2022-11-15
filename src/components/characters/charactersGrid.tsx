@@ -4,7 +4,7 @@ import { GridSize, GridSpacing } from "@mui/material/Grid";
 import CharacterBox from "../characters/characterBox";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Unstable_Grid2";
-
+import Backdrop from "@mui/material/Backdrop";
 import { characterInitialData } from "../../ts/types/character.types";
 import { pagination } from "../../ts/types/info.types";
 import { useState as UseState } from "react";
@@ -15,17 +15,28 @@ import MessageError from "../../components/messages/emptyErrorMessage";
 
 import Pagination from "../pagination/pagination";
 
+type responsiveSizes = boolean | GridSize | undefined;
+
+type responsiveSpacing = {
+  xs?: responsiveSizes;
+  sm?: responsiveSizes;
+  md?: responsiveSizes;
+  lg?: responsiveSizes;
+  xl?: responsiveSizes;
+};
+
 type charactersGridProp = {
   characters: characterInitialData[];
   info?: pagination;
   loading?: boolean;
   onPagination?: (page: number) => void;
-  xs?: boolean | GridSize | undefined;
-  sm?: boolean | GridSize | undefined;
-  md?: boolean | GridSize | undefined;
-  lg?: boolean | GridSize | undefined;
-  xl?: boolean | GridSize | undefined;
+  xs?: responsiveSizes;
+  sm?: responsiveSizes;
+  md?: responsiveSizes;
+  lg?: responsiveSizes;
+  xl?: responsiveSizes;
   spacing?: ResponsiveStyleValue<GridSpacing> | undefined;
+  columnSpacing?: ResponsiveStyleValue<GridSpacing> | undefined;
 };
 
 export default function charactersGrid({
@@ -37,8 +48,8 @@ export default function charactersGrid({
   md,
   lg,
   spacing = 5,
+  columnSpacing,
 }: charactersGridProp) {
-  const [paginationInfo, setPaginationInfo] = UseState(info);
   const [currentCharacterID, setCurrentCharacterID] = UseState<
     Number | undefined
   >();
@@ -59,40 +70,47 @@ export default function charactersGrid({
 
   return (
     <Box>
-      {loading ? (
-        <Box className="min-w-[100vh] grid items-center">
-          <CircularProgress />
-        </Box>
-      ) : (
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+        onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Box>
+        <Grid
+          container
+          spacing={spacing}
+          className="place-content-center"
+          columnSpacing={columnSpacing}
+        >
+          {characters.map((character, index) => (
+            <Grid {...gridOptions} key={index} className="relative">
+              <CharacterBox
+                character={character}
+                handleOpen={handleOpen}
+                setCurrentCharacterID={setCurrentCharacterID}
+              />
+            </Grid>
+          ))}
+        </Grid>
         <Box>
-          <Grid container spacing={spacing} className="place-content-center">
-            {characters.map((character, index) => (
-              <Grid {...gridOptions} key={index} className="relative">
-                <CharacterBox
-                  character={character}
-                  handleOpen={handleOpen}
-                  setCurrentCharacterID={setCurrentCharacterID}
-                />
-              </Grid>
-            ))}
-          </Grid>
-          <Box>
-            {characters.length == 0 && (
-              <MessageError message="No characters..." />
-            )}
-          </Box>
+          {characters.length == 0 && (
+            <MessageError message="No characters..." />
+          )}
         </Box>
-      )}
+      </Box>
+
       <CharacterModal
         open={open}
         handleClose={handleClose}
         characterID={currentCharacterID}
       />
 
-      {onPagination && paginationInfo && characters.length > 0 && (
+      {onPagination && info && characters.length > 0 && (
         <Pagination
           page={page}
-          paginationInfo={paginationInfo}
+          paginationInfo={info}
           onChange={(page) => {
             setPage(page);
 

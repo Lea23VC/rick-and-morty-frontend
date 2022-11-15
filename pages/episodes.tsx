@@ -36,7 +36,7 @@ Home.getInitialProps = async (ctx: any) => {
   console.log("episodes: ", episodes);
   return {
     episodes: episodes.data.episodes.results,
-    queryInfo: "a",
+    queryInfo: episodes.data.episodes.info,
   };
 };
 

@@ -69,7 +69,11 @@ export default function SwipeableTemporaryDrawer({
         </IconButton>
 
         {views.map((text, index) => (
-          <Link key={index} href={text.url}>
+          <Link
+            key={index}
+            href={text.url}
+            onClick={toggleDrawer("left", false)}
+          >
             <ListItem key={text.label} disablePadding>
               <ListItemButton>
                 <ListItemText
@@ -95,20 +99,17 @@ export default function SwipeableTemporaryDrawer({
 
   return (
     <div>
-      {(["left", "right", "top", "bottom"] as const).map((anchor) => (
-        <Fragment key={anchor}>
-          {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
-          <StyledSwipeableDrawer
-            key={anchor}
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-            onOpen={toggleDrawer(anchor, true)}
-          >
-            {list(anchor)}
-          </StyledSwipeableDrawer>
-        </Fragment>
-      ))}
+      <Fragment>
+        {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
+        <StyledSwipeableDrawer
+          anchor={"left"}
+          open={state["left"]}
+          onClose={toggleDrawer("left", false)}
+          onOpen={toggleDrawer("left", true)}
+        >
+          {list("left")}
+        </StyledSwipeableDrawer>
+      </Fragment>
     </div>
   );
 }

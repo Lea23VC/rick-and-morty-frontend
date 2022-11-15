@@ -11,6 +11,7 @@ import EPISODES_BY_IDS_QUERY from "../../Graphql/Queries/EpisodesByIds.graphql";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
 import CharactersGrid from "../characters/charactersGrid";
 import EpisodesGrid from "../episodes/episodesGrid";
@@ -83,20 +84,23 @@ export default function favoritesView() {
 
   return (
     <ViewLayout title="Favorites" searchAction={onSearch}>
-      <Box className="flex flex-col md:flex-row gap-10">
+      <Container className="flex flex-col md:flex-row gap-10">
         <Box className="pt-20 w-[100%] md:w-[50%]">
           <Box className="py-4">
             <Typography className="font-eurostile font-bold text-lg sm:text-xl md:text-2xl uppercase text-shadow-main text-white text-center">
               Characters
             </Typography>
           </Box>
-          <CharactersGrid
-            characters={characters}
-            loading={loadingChapters}
-            xs={6}
-            md={6}
-            lg={6}
-          />
+          <Container>
+            <CharactersGrid
+              characters={characters}
+              loading={loadingChapters}
+              xs={6}
+              md={6}
+              lg={6}
+              spacing={{ xs: 3, sm: 3, md: 3 }}
+            />
+          </Container>
         </Box>
         <Box className="pt-20 w-[100%] md:w-[50%]">
           <Box className="py-4">
@@ -112,7 +116,7 @@ export default function favoritesView() {
             lg={6}
           />
         </Box>
-      </Box>
+      </Container>
     </ViewLayout>
   );
 }

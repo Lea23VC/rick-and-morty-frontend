@@ -4,7 +4,7 @@ import { GridSize, GridSpacing } from "@mui/material/Grid";
 import Grid from "@mui/material/Unstable_Grid2";
 
 import CircularProgress from "@mui/material/CircularProgress";
-
+import Backdrop from "@mui/material/Backdrop";
 import { pagination } from "../../ts/types/info.types";
 import { useState as UseState } from "react";
 
@@ -35,6 +35,7 @@ export default function episodesGrid({
   loading = false,
   onPagination,
   xs,
+  sm,
   md,
   lg,
   spacing,
@@ -42,7 +43,6 @@ export default function episodesGrid({
   const [currentEpisodeID, setCurrentEpisodeID] = UseState<
     Number | undefined
   >();
-  const router = UseRouter();
 
   const [open, setOpen] = UseState(false);
   const handleOpen = () => setOpen(true);
@@ -54,38 +54,40 @@ export default function episodesGrid({
   const [page, setPage] = UseState(1);
   const gridOptions = {
     xs: xs,
+    sm: sm,
     md: md,
     lg: lg,
   };
 
   return (
     <Box>
-      {loading ? (
-        <Box className="min-w-[100vh] ">
-          <CircularProgress />
-        </Box>
-      ) : (
-        <Grid container spacing={spacing} className="place-content-center ">
-          {episodes.map((episode, index) => (
-            <Grid
-              {...gridOptions}
-              key={index}
-              className="relative border  border-light-blue border-solid shadow-main bg-transparent-black p-4 "
-            >
-              <EpisodeBox
-                episode={episode}
-                handleOpen={handleOpen}
-                setCurrentEpisodeID={setCurrentEpisodeID}
-              />
-            </Grid>
-          ))}
-          <EpisodeModal
-            open={open}
-            handleClose={handleClose}
-            episodeID={currentEpisodeID}
-          />
-        </Grid>
-      )}
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+        onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Grid container spacing={spacing} className="place-content-center ">
+        {episodes.map((episode, index) => (
+          <Grid
+            {...gridOptions}
+            key={index}
+            className="relative border  border-light-blue border-solid shadow-main bg-transparent-black p-4 "
+          >
+            <EpisodeBox
+              episode={episode}
+              handleOpen={handleOpen}
+              setCurrentEpisodeID={setCurrentEpisodeID}
+            />
+          </Grid>
+        ))}
+        <EpisodeModal
+          open={open}
+          handleClose={handleClose}
+          episodeID={currentEpisodeID}
+        />
+      </Grid>
 
       {onPagination && info && (
         <Pagination

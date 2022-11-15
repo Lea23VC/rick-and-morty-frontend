@@ -18,6 +18,7 @@ export default function charactersView({
   info,
 }: episodesViewProps): JSX.Element {
   const router = UseRouter();
+  console.log("ep info: ", info);
 
   const [paginationInfo, setPaginationInfo] = UseState(info);
 
@@ -70,7 +71,10 @@ export default function charactersView({
     <ViewLayout title="Episodes" searchAction={searchByName}>
       <Container className="py-10">
         <EpisodesGrid
-          xs={3}
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
           episodes={currentEpisodes}
           info={paginationInfo}
           loading={loading}

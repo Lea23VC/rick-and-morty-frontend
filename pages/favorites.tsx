@@ -1,52 +1,14 @@
 import Head from "next/head";
-import Box from "@mui/material/Box";
-
 import EPISODES_QUERY from "./../src/Graphql/Queries/Episodes.graphql";
 import client from "../apollo-client";
 import { ApolloQueryResult } from "@apollo/client";
 import MainTitle from "../src/components/home/mainTitle";
-import EpisodesView from "../src/components/home/episodesView";
-import { GetStaticProps } from "next";
-
+import Container from "@mui/material/Container";
 import { pagination } from "../src/ts/types/info.types";
-
-import { episodeInitialData, episode } from "../src/ts/types/episode.types";
-
-import ViewLayout from "../src/components/layouts/viewLayout";
+import { episodeInitialData } from "../src/ts/types/episode.types";
 import FavoritesView from "../src/components/home/favoritesView";
 
-type graphqlResponse = {
-  episodes: {
-    results: episodeInitialData[];
-    info: pagination;
-  };
-
-  loading: boolean;
-  network: number;
-};
-
-type homeProps = {
-  episodes: episodeInitialData[];
-  queryInfo: pagination;
-};
-
-Favorites.getInitialProps = async (ctx: any) => {
-  const episodes: ApolloQueryResult<graphqlResponse> = await client.query({
-    query: EPISODES_QUERY,
-    variables: { withMoreData: false },
-  });
-
-  console.log("episodes: ", episodes);
-  return {
-    episodes: episodes.data.episodes.results,
-    queryInfo: "a",
-  };
-};
-
-export default function Favorites({
-  episodes,
-  queryInfo,
-}: homeProps): JSX.Element {
+export default function Favorites(): JSX.Element {
   return (
     <div className="bg-main bg-cover">
       <Head>
@@ -55,10 +17,10 @@ export default function Favorites({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="min-h-screen max-w-screen-lg m-auto">
-        <Box className="py-32">
+        <Container className="py-32">
           <MainTitle />
           <FavoritesView />
-        </Box>
+        </Container>
       </main>
     </div>
   );

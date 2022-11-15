@@ -15,6 +15,9 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
   [`& .MuiPaginationItem-ellipsis`]: {
     fontFamily: "Roboto",
   },
+  [`& .MuiPagination-ul`]: {
+    placeContent: "center",
+  },
 }));
 
 type paginationProps = {
