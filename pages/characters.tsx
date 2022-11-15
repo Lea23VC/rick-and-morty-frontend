@@ -10,7 +10,7 @@ import CharacterView from "../src/components/home/charactersView";
 import { characterInitialData } from "../src/ts/types/character.types";
 
 import { pagination } from "../src/ts/types/info.types";
-
+import { GetStaticProps, GetStaticPropsContext } from "next";
 type graphqlResponse = {
   characters: {
     results: characterInitialData[];
@@ -26,16 +26,18 @@ type homeProps = {
   queryInfo: pagination;
 };
 
-Characters.getInitialProps = async (ctx: any) => {
+export async function getStaticProps() {
   const characters: ApolloQueryResult<graphqlResponse> = await client.query({
     query: CHARACTERS_QUERY,
     variables: { withMoreData: false },
   });
   return {
-    characters: characters.data.characters.results,
-    queryInfo: characters.data.characters.info,
+    props: {
+      characters: characters.data.characters.results,
+      queryInfo: characters.data.characters.info,
+    },
   };
-};
+}
 
 export default function Characters({
   characters,

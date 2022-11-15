@@ -27,7 +27,7 @@ type homeProps = {
   queryInfo: pagination;
 };
 
-Home.getInitialProps = async (ctx: any) => {
+export async function getStaticProps() {
   const episodes: ApolloQueryResult<graphqlResponse> = await client.query({
     query: EPISODES_QUERY,
     variables: { withMoreData: false },
@@ -35,10 +35,12 @@ Home.getInitialProps = async (ctx: any) => {
 
   console.log("episodes: ", episodes);
   return {
-    episodes: episodes.data.episodes.results,
-    queryInfo: episodes.data.episodes.info,
+    props: {
+      episodes: episodes.data.episodes.results,
+      queryInfo: episodes.data.episodes.info,
+    },
   };
-};
+}
 
 export default function Home({ episodes, queryInfo }: homeProps): JSX.Element {
   return (
