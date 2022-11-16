@@ -4,13 +4,21 @@ import Box from "@mui/material/Box";
 import EPISODES_QUERY from "./../src/Graphql/Queries/Episodes.graphql";
 import client from "../apollo-client";
 import { ApolloQueryResult } from "@apollo/client";
-import MainTitle from "../src/components/home/mainTitle";
-import EpisodesView from "../src/components/episodes/view/episodesView";
-import { GetStaticProps } from "next";
 
 import { pagination } from "../src/ts/types/info.types";
 
-import { episodeInitialData, episode } from "../src/ts/types/episode.types";
+import { episodeInitialData } from "../src/ts/types/episode.types";
+
+import MainTitle from "../src/components/home/mainTitle";
+
+import dynamic from "next/dynamic";
+
+const EpisodesView = dynamic(
+  () => import("../src/components/episodes/view/episodesView"),
+  {
+    suspense: true,
+  }
+);
 
 type graphqlResponse = {
   episodes: {

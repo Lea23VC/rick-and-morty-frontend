@@ -1,4 +1,7 @@
-import Header from "../header/header";
+import dynamic from "next/dynamic";
+const Header = dynamic(() => import("../header/header"), {
+  suspense: true,
+});
 
 type layoutProps = {
   children: JSX.Element;

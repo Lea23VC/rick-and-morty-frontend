@@ -4,13 +4,21 @@ import Box from "@mui/material/Box";
 import CHARACTERS_QUERY from "./../src/Graphql/Queries/Characters.graphql";
 import client from "../apollo-client";
 import { ApolloQueryResult } from "@apollo/client";
-import MainTitle from "../src/components/home/mainTitle";
-import CharacterView from "../src/components/characters/view/charactersView";
 
 import { characterInitialData } from "../src/ts/types/character.types";
-
 import { pagination } from "../src/ts/types/info.types";
-import { GetStaticProps, GetStaticPropsContext } from "next";
+
+import MainTitle from "../src/components/home/mainTitle";
+
+import dynamic from "next/dynamic";
+
+const CharacterView = dynamic(
+  () => import("../src/components/characters/view/charactersView"),
+  {
+    suspense: true,
+  }
+);
+
 type graphqlResponse = {
   characters: {
     results: characterInitialData[];

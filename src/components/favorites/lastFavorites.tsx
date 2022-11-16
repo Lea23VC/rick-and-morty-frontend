@@ -8,6 +8,7 @@ import { getLast } from "../../utils/getLastFavorites";
 
 export default function lastFavorites() {
   const [lastFavoriteCharacter, lastFavoriteEpisode] = getLast();
+  console.log("Last fav: ", lastFavoriteCharacter);
 
   const content = [
     {

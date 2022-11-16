@@ -34,7 +34,7 @@ export function getLast(): [
       localStorage.getItem("episodes") || "{}"
     );
 
-    console.log(ep_ids);
+    console.log("fav eps: ", ep_ids);
 
     if (getLastFavData(char_ids)[0]?.date) {
       getCharacter({
@@ -72,5 +72,6 @@ function getLastFavData(info: JSONLocalData) {
     return a.date < b.date ? 1 : -1;
   });
 
+  console.log("sortable: ", sortable);
   return sortable;
 }

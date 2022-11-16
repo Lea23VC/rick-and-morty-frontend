@@ -1,32 +1,51 @@
 import Head from "next/head";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Unstable_Grid2";
-
+import Link from "next/link";
 import CHARACTERS_QUERY from "./../src/Graphql/Queries/Characters.graphql";
 import EPISODES_QUERY from "../src/Graphql/Queries/Episodes.graphql";
 import client from "../apollo-client";
 import { ApolloQueryResult } from "@apollo/client";
-import MainTitle from "../src/components/home/mainTitle";
+
 import { GetStaticProps } from "next";
+import { Suspense } from "react";
 
-import {
-  characterInitialData,
-  character,
-} from "../src/ts/types/character.types";
-
+import { characterInitialData } from "../src/ts/types/character.types";
+import { episodeInitialData } from "../src/ts/types/episode.types";
 import { pagination } from "../src/ts/types/info.types";
 
 import Container from "@mui/material/Container";
 
-import CharactersGrid from "../src/components/characters/charactersGrid";
-import EpisodesGrid from "../src/components/episodes/episodesGrid";
+import MainTitle from "../src/components/home/mainTitle";
 
-import Button from "../src/components/buttons/yellowButton";
-import Link from "next/link";
-import { episodeInitialData } from "../src/ts/types/episode.types";
+//dynamic imports
+//only the main title is not dynamic imported
+import dynamic from "next/dynamic";
 
-import LastFavorites from "../src/components/favorites/lastFavorites";
+const CharactersGrid = dynamic(
+  () => import("../src/components/characters/charactersGrid"),
+  {
+    suspense: true,
+  }
+);
+
+const EpisodesGrid = dynamic(
+  () => import("../src/components/episodes/episodesGrid"),
+  {
+    suspense: true,
+  }
+);
+
+const Button = dynamic(() => import("../src/components/buttons/yellowButton"), {
+  suspense: true,
+});
+
+const LastFavorites = dynamic(
+  () => import("../src/components/favorites/lastFavorites"),
+  {
+    suspense: true,
+  }
+);
 
 type data = {
   results: characterInitialData[] | episodeInitialData[];

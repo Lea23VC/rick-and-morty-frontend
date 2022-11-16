@@ -1,12 +1,16 @@
 import Head from "next/head";
-import EPISODES_QUERY from "./../src/Graphql/Queries/Episodes.graphql";
-import client from "../apollo-client";
-import { ApolloQueryResult } from "@apollo/client";
+
 import MainTitle from "../src/components/home/mainTitle";
 import Container from "@mui/material/Container";
-import { pagination } from "../src/ts/types/info.types";
-import { episodeInitialData } from "../src/ts/types/episode.types";
-import FavoritesView from "../src/components/favorites/view/favoritesView";
+
+import dynamic from "next/dynamic";
+
+const FavoritesView = dynamic(
+  () => import("../src/components/favorites/view/favoritesView"),
+  {
+    suspense: true,
+  }
+);
 
 export default function Favorites(): JSX.Element {
   return (
