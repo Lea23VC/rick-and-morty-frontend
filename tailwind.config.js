@@ -31,6 +31,7 @@ module.exports = {
         "light-blue": "#00ffea",
         "main-yellow": "#ffcd0d",
         "transparent-black": "rgba(0, 0, 0, 0.6)",
+        "transparent-blacker": "rgba(0, 0, 0, 0.8)",
       },
       boxShadow: {
         main: "0 0 10px 5px rgba(159, 235, 243, 0.27)",

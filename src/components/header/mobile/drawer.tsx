@@ -5,6 +5,7 @@ import {
   MouseEvent,
 } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import { useRouter as UseRouter } from "next/router";
 import Typography from "@mui/material/Typography";
@@ -37,7 +38,7 @@ type drawerProps = {
 
 const StyledSwipeableDrawer = styled(SwipeableDrawer)(({ theme }) => ({
   [`& .MuiPaper-root`]: {
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
 }));
 
@@ -56,6 +57,17 @@ export default function SwipeableTemporaryDrawer({
       role="presentation"
     >
       <List>
+        <Box className="float-left pl-4">
+          <Link href="/">
+            <Image
+              src="/images/logos/Rick_and_Morty.svg"
+              alt="header logo"
+              width={120}
+              height={80}
+            ></Image>
+          </Link>
+        </Box>
+
         <IconButton
           size="large"
           edge="start"
@@ -74,26 +86,23 @@ export default function SwipeableTemporaryDrawer({
             href={text.url}
             onClick={toggleDrawer("left", false)}
           >
-            <ListItem key={text.label} disablePadding>
-              <ListItemButton>
-                <ListItemText
-                  primary={
-                    <Typography
-                      className={`text-white font-eurostile text-xl sm:text-md md:text-lg font-bold text-shadow-main ${
-                        pathname == text.url && "text-main-yellow"
-                      }`}
-                    >
-                      {text.label}
-                    </Typography>
-                  }
-                />
-              </ListItemButton>
+            <ListItem key={text.label}>
+              <ListItemText
+                primary={
+                  <Typography
+                    className={`text-white font-eurostile text-xl sm:text-md md:text-lg font-bold text-shadow-main ${
+                      pathname == text.url && "text-main-yellow"
+                    }`}
+                  >
+                    {text.label}
+                  </Typography>
+                }
+              />
             </ListItem>
           </Link>
         ))}
+        <ListItem> {SearchBar}</ListItem>
       </List>
-
-      {SearchBar}
     </Box>
   );
 

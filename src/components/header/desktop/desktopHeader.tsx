@@ -68,12 +68,12 @@ export default function desktopHeader({
         </Link>
       </Box>
 
-      <Box className="flex gap-6  items-center">
+      <Box className="flex gap-6  items-center pl-4">
         {views.map((view, index) => (
           <Link key={index} href={view.url}>
             <Box>
               <Typography
-                className={`font-eurostile text-xs sm:text-md md:text-lg font-bold text-shadow-main text-white ${
+                className={`font-eurostile text-xs sm:text-sm md:text-md lg:text-lg  font-bold text-shadow-main text-white ${
                   pathname == view.url && "text-main-yellow"
                 } `}
                 variant="button"
@@ -84,8 +84,7 @@ export default function desktopHeader({
           </Link>
         ))}
       </Box>
-      <Box className="self-center px-2">
-        <Box></Box>
+      <Box className="self-center pl-6">
         <Box>{SearchBar}</Box>
         {/* <Box sx={{ minWidth: 100, paddingBottom: 2 }}>
           <StyledFormControl
