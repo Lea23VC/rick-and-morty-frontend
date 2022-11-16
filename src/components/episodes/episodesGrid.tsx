@@ -8,15 +8,23 @@ import Backdrop from "@mui/material/Backdrop";
 import { pagination } from "../../ts/types/info.types";
 import { useState as UseState } from "react";
 
-import { useRouter as UseRouter } from "next/router";
-
-import Pagination from "../pagination/pagination";
 import { episodeInitialData } from "../../ts/types/episode.types";
 
 import EpisodeBox from "../episodes/episodeBox";
-import EpisodeModal from "../episodes/episodeModal";
 
 import MessageError from "../messages/emptyErrorMessage";
+
+import dynamic from "next/dynamic";
+
+//dynamic imported modal
+const EpisodeModal = dynamic(() => import("../episodes/episodeModal"), {
+  suspense: true,
+});
+
+//dynamic imported pagination
+const Pagination = dynamic(() => import("../pagination/pagination"), {
+  suspense: true,
+});
 
 type episodesGridProp = {
   episodes: episodeInitialData[];

@@ -1,5 +1,3 @@
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
 import InfoModal from "../layouts/modalLayout";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Container } from "@mui/material";
