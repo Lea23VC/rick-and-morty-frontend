@@ -16,7 +16,7 @@ Las librerías principales utilizadas fueron:
 - Apollo Client
 - TailwindCSS
 
-Las paginas principales son Characters, Episodes y Favorites. La aplicación hace uso de SSG en build time, utilizando los datos sin filtrar para el render inicial en estas paginas.
+Las paginas principales son Characters, Episodes y Favorites. La aplicación hace uso de SSG en build time, utilizando los datos sin filtrar para el render inicial en estas paginas. Modals y Header estan usando dynamic import dado por NextJS.
 
 
 Link deploy: https://rick-and-morty-frontend-self.vercel.app/
