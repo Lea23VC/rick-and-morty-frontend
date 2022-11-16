@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-
+import InfoModal from "../layouts/modalLayout";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Container } from "@mui/material";
 import EPISODE_QUERY from "../../Graphql/Queries/Episode.graphql";
@@ -12,6 +12,7 @@ import { createEpisodeInfoArray } from "../../utils/createEpisodeInfoArray";
 import { episode } from "../../ts/types/episode.types";
 
 import EpisodeModalContent from "../episodes/episodeModalContent";
+import { character } from "../../ts/types/character.types";
 
 type modalProps = {
   open: boolean;
@@ -28,7 +29,9 @@ export default function characterModal({
   const [loadEpisode, { loading, data, error, called, refetch }] =
     UseLazyQuery(EPISODE_QUERY);
 
-  const [episodeData, setEpisodeData] = UseState<episode | undefined>();
+  const [episodeData, setEpisodeData] = UseState<
+    episode | character | undefined
+  >();
   UseEffect(() => {
     if (open && episodeID) {
       loadEpisode({ variables: { id: episodeID } })
@@ -43,24 +46,14 @@ export default function characterModal({
   }, [open]);
 
   return (
-    <Modal
-      open={open}
-      onClose={() => {
-        handleClose();
-        setEpisodeData(undefined);
-      }}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box className="absolute top-1/2 left-1/2 w-[80%] sm:w-[400px] md:w-[800px] bg-transparent-black -translate-y-1/2 -translate-x-1/2 shadow-main border border-light-blue border-solid p-5 sm:p-10 max-h-[80vh] overflow-y-scroll scrollbar-thumb-main-yellow scrollbar-thumb-rounded scrollbar-thin">
-        {loading || !called || episodeData == undefined ? (
-          <Container className="flex justify-center">
-            <CircularProgress />
-          </Container>
-        ) : (
-          <EpisodeModalContent episodeData={episodeData} />
-        )}
-      </Box>
-    </Modal>
+    <InfoModal open={open} handleClose={handleClose} setData={setEpisodeData}>
+      {loading || !called || episodeData == undefined ? (
+        <Container className="flex justify-center">
+          <CircularProgress />
+        </Container>
+      ) : (
+        <EpisodeModalContent episodeData={episodeData as episode} />
+      )}
+    </InfoModal>
   );
 }
