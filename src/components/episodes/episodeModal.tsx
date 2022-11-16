@@ -6,10 +6,9 @@ import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Container } from "@mui/material";
 import EPISODE_QUERY from "../../Graphql/Queries/Episode.graphql";
-
+import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import { useEffect as UseEffect, useState as UseState } from "react";
 
-import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import { createEpisodeInfoArray } from "../../utils/createEpisodeInfoArray";
 
 import { episode } from "../../ts/types/episode.types";

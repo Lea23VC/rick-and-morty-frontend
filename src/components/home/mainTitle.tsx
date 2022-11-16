@@ -22,7 +22,7 @@ export default function mainTitle(): JSX.Element {
           gutterBottom
           className="font-eurostile text-xl sm:text-2xl md:text-3xl"
         >
-          Characters, locations and episodes!
+          Your favorites characters and episodes!
         </Typography>
       </Box>
     </Container>

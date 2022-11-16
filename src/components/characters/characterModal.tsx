@@ -24,9 +24,7 @@ export default function characterModal({
   handleClose,
   characterID,
 }: modalProps): JSX.Element {
-  console.log("Character ID: ", characterID);
-  const [loadCharacter, { loading, data, error, called, refetch }] =
-    UseLazyQuery(CHARACTER_QUERY);
+  const [loadCharacter, { loading, called }] = UseLazyQuery(CHARACTER_QUERY);
 
   const [characterData, setCharacterData] = UseState<character | undefined>();
   UseEffect(() => {

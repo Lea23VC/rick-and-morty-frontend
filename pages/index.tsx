@@ -1,11 +1,13 @@
 import Head from "next/head";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Unstable_Grid2";
 
 import CHARACTERS_QUERY from "./../src/Graphql/Queries/Characters.graphql";
+import EPISODES_QUERY from "../src/Graphql/Queries/Episodes.graphql";
 import client from "../apollo-client";
 import { ApolloQueryResult } from "@apollo/client";
 import MainTitle from "../src/components/home/mainTitle";
-import CharacterView from "../src/components/home/charactersView";
 import { GetStaticProps } from "next";
 
 import {
@@ -15,21 +17,34 @@ import {
 
 import { pagination } from "../src/ts/types/info.types";
 
-import Header from "../src/components/header/header";
+import Container from "@mui/material/Container";
+
+import CharactersGrid from "../src/components/characters/charactersGrid";
+import EpisodesGrid from "../src/components/episodes/episodesGrid";
+
+import Button from "../src/components/buttons/yellowButton";
+import Link from "next/link";
+import { episodeInitialData } from "../src/ts/types/episode.types";
+
+import { getLast } from "../src/utils/getLastFavorites";
+
+type data = {
+  results: characterInitialData[] | episodeInitialData[];
+  info: pagination;
+};
 
 type graphqlResponse = {
-  characters: {
-    results: characterInitialData[];
-    info: pagination;
-  };
+  characters?: data;
+  episodes?: data;
 
   loading: boolean;
   network: number;
 };
 
 type homeProps = {
-  characters: character[];
+  characters: characterInitialData[];
   queryInfo: pagination;
+  episodes: episodeInitialData[];
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
@@ -37,10 +52,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
     query: CHARACTERS_QUERY,
     variables: { withMoreData: false },
   });
+
+  const episodes: ApolloQueryResult<graphqlResponse> = await client.query({
+    query: EPISODES_QUERY,
+    variables: { withMoreData: false },
+  });
+
   return {
     props: {
-      characters: characters.data.characters.results,
-      queryInfo: characters.data.characters.info,
+      characters: characters.data.characters?.results.slice(0, 5),
+      episodes: episodes.data.episodes?.results.slice(0, 11),
     },
   };
 };
@@ -48,7 +69,25 @@ export const getStaticProps: GetStaticProps = async (context) => {
 export default function Home({
   characters,
   queryInfo,
+  episodes,
 }: homeProps): JSX.Element {
+  const [lastFavoriteCharacter, lastFavoriteEpisode] = getLast();
+  console.log("test: ", lastFavoriteEpisode);
+
+  const data = [
+    {
+      title: "Characters",
+      element: <CharactersGrid characters={characters} xs={2} spacing={0} />,
+      url: "/characters",
+    },
+
+    {
+      title: "Episodes",
+      element: <EpisodesGrid episodes={episodes} xs={3} spacing={0} />,
+      url: "/episodes",
+    },
+  ];
+
   return (
     <div className="bg-main bg-cover">
       <Head>
@@ -59,6 +98,79 @@ export default function Home({
 
       <main className="min-h-screen max-w-screen-lg m-auto">
         <Box className="pt-32"></Box>
+        <MainTitle />
+
+        <Container>
+          {data.map((value, index) => (
+            <Box key={index} className="pt-5 pb-20">
+              <Box className="py-4">
+                <Typography
+                  id="title"
+                  className="font-eurostile font-bold text-2xl sm:text-3xl md:text-4xl text-left uppercase text-shadow-main text-white"
+                >
+                  {value.title}
+                </Typography>
+              </Box>
+              <Box className="py-4">{value.element}</Box>
+
+              <Box>
+                <Link href={value.url}>
+                  <Button label={`See more ${value.title}`} />
+                </Link>
+              </Box>
+            </Box>
+          ))}
+          <Box className="py-4">
+            <Typography
+              id="title"
+              className="font-eurostile font-bold text-2xl sm:text-3xl md:text-4xl text-left uppercase text-shadow-main text-white"
+            >
+              Favorites
+            </Typography>
+          </Box>
+          <Grid container xs={12} spacing={2}>
+            <Box>
+              <Box>
+                <Box className="py-2">
+                  <Typography
+                    variant="h3"
+                    className="font-eurostile font-bold text-light-blue text-3xl pb-2"
+                  >
+                    Last favorite character added
+                  </Typography>
+                </Box>
+
+                <CharactersGrid
+                  characters={
+                    lastFavoriteCharacter?.name ? [lastFavoriteCharacter] : []
+                  }
+                  xs={6}
+                  spacing={0}
+                />
+              </Box>
+            </Box>
+            <Box>
+              <Box>
+                <Box className="py-2">
+                  <Typography
+                    variant="h3"
+                    className="font-eurostile font-bold text-light-blue text-3xl pb-2"
+                  >
+                    Last favorite episode added
+                  </Typography>
+                </Box>
+
+                <EpisodesGrid
+                  episodes={
+                    lastFavoriteEpisode?.name ? [lastFavoriteEpisode] : []
+                  }
+                  xs={12}
+                  spacing={0}
+                />
+              </Box>
+            </Box>
+          </Grid>
+        </Container>
       </main>
     </div>
   );

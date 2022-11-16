@@ -54,6 +54,7 @@ export default function charactersGrid({
     Number | undefined
   >();
 
+  console.log("characters: ", characters);
   const [open, setOpen] = UseState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -78,12 +79,7 @@ export default function charactersGrid({
         <CircularProgress color="inherit" />
       </Backdrop>
       <Box>
-        <Grid
-          container
-          spacing={spacing}
-          className="place-content-center"
-          columnSpacing={columnSpacing}
-        >
+        <Grid container spacing={spacing} columnSpacing={columnSpacing}>
           {characters.map((character, index) => (
             <Grid {...gridOptions} key={index} className="relative">
               <CharacterBox

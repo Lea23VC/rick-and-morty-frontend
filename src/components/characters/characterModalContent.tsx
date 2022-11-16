@@ -24,7 +24,10 @@ export default function characterModalContent({
       if (favorite) {
         delete values[`${characterData.id}`];
       } else {
-        values[`${characterData.id}`] = { id: characterData.id };
+        values[`${characterData.id}`] = {
+          id: characterData.id,
+          date: Date.now(),
+        };
       }
       localStorage.setItem("characters", JSON.stringify(values));
       setFavorite(!favorite);

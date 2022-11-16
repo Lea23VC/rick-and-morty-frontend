@@ -4,10 +4,13 @@ import { Typography } from "@mui/material";
 
 type buttonProps = {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
-export default function yellowButton({ onClick, label }: buttonProps) {
+export default function yellowButton({
+  onClick = () => {},
+  label,
+}: buttonProps) {
   return (
     <Stack spacing={2} direction="row" className="flex justify-center">
       <Button

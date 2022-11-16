@@ -24,7 +24,7 @@ export default function episodeModalContent({
       if (favorite) {
         delete values[`${episodeData.id}`];
       } else {
-        values[`${episodeData.id}`] = episodeData.id;
+        values[`${episodeData.id}`] = { id: episodeData.id, date: Date.now() };
       }
       localStorage.setItem("episodes", JSON.stringify(values));
       setFavorite(!favorite);

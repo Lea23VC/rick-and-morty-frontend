@@ -6,8 +6,8 @@ import { episodeInitialData } from "../../ts/types/episode.types";
 
 type episodeBoxProps = {
   episode: episodeInitialData;
-  handleOpen: () => void;
-  setCurrentEpisodeID: Dispatch<SetStateAction<Number | undefined>>;
+  handleOpen?: () => void;
+  setCurrentEpisodeID?: Dispatch<SetStateAction<Number | undefined>>;
 };
 
 export default function episodeBox({
@@ -18,11 +18,15 @@ export default function episodeBox({
   return (
     <Box
       className="cursor-pointer"
-      onClick={() => {
-        console.log("episode: ", episode.id);
-        setCurrentEpisodeID(episode.id);
-        handleOpen();
-      }}
+      onClick={
+        handleOpen && setCurrentEpisodeID
+          ? () => {
+              console.log("episode: ", episode.id);
+              setCurrentEpisodeID(episode.id);
+              handleOpen();
+            }
+          : () => {}
+      }
     >
       <Typography className="font-eurostile text-sm sm:text-lg md:text-xl text-shadow-main font-bold inline text-white">
         {episode.name}{" "}

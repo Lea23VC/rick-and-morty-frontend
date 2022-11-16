@@ -17,3 +17,8 @@ export type paginationInfoArray = {
 export type paginationInfo = {
   info: pagination;
 };
+
+export type localStorageData = {
+  id: number;
+  date: Date;
+};

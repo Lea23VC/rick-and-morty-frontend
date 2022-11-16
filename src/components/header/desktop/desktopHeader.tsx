@@ -73,7 +73,7 @@ export default function desktopHeader({
           <Link key={index} href={view.url}>
             <Box>
               <Typography
-                className={`font-eurostile text-xs sm:text-md md:text-lg font-bold text-shadow-main ${
+                className={`font-eurostile text-xs sm:text-md md:text-lg font-bold text-shadow-main text-white ${
                   pathname == view.url && "text-main-yellow"
                 } `}
                 variant="button"
