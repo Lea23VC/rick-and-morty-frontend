@@ -1,8 +1,0 @@
-fragment LocationData on Character {
-  location {
-    id
-    name
-    type
-    dimension
-  }
-}

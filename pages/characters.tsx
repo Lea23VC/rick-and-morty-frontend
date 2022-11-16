@@ -5,7 +5,7 @@ import CHARACTERS_QUERY from "./../src/Graphql/Queries/Characters.graphql";
 import client from "../apollo-client";
 import { ApolloQueryResult } from "@apollo/client";
 import MainTitle from "../src/components/home/mainTitle";
-import CharacterView from "../src/components/home/charactersView";
+import CharacterView from "../src/components/characters/view/charactersView";
 
 import { characterInitialData } from "../src/ts/types/character.types";
 

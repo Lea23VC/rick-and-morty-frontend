@@ -1,4 +1,4 @@
-import Header from "../components/header/header";
+import Header from "../header/header";
 
 type layoutProps = {
   children: JSX.Element;

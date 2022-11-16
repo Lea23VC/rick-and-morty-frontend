@@ -6,7 +6,7 @@ import MainTitle from "../src/components/home/mainTitle";
 import Container from "@mui/material/Container";
 import { pagination } from "../src/ts/types/info.types";
 import { episodeInitialData } from "../src/ts/types/episode.types";
-import FavoritesView from "../src/components/home/favoritesView";
+import FavoritesView from "../src/components/favorites/view/favoritesView";
 
 export default function Favorites(): JSX.Element {
   return (

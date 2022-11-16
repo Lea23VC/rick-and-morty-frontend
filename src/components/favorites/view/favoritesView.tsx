@@ -1,23 +1,23 @@
-import ViewLayout from "../layouts/viewLayout";
+import ViewLayout from "../../layouts/viewLayout";
 import {
   SetStateAction,
   useEffect as UseEffect,
   useState as UseState,
 } from "react";
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
-import CHARACTERS_BY_IDS_QUERY from "../../Graphql/Queries/CharactersByIds.graphql";
-import EPISODES_BY_IDS_QUERY from "../../Graphql/Queries/EpisodesByIds.graphql";
+import CHARACTERS_BY_IDS_QUERY from "../../../Graphql/Queries/CharactersByIds.graphql";
+import EPISODES_BY_IDS_QUERY from "../../../Graphql/Queries/EpisodesByIds.graphql";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-import CharactersGrid from "../characters/charactersGrid";
-import EpisodesGrid from "../episodes/episodesGrid";
+import CharactersGrid from "../../characters/charactersGrid";
+import EpisodesGrid from "../../episodes/episodesGrid";
 
-import { characterInitialData } from "../../ts/types/character.types";
-import { episodeInitialData } from "../../ts/types/episode.types";
+import { characterInitialData } from "../../../ts/types/character.types";
+import { episodeInitialData } from "../../../ts/types/episode.types";
 
-import { searchValuesinArray } from "../../utils/searchValuesInArray";
+import { searchValuesinArray } from "../../../utils/searchValuesInArray";
 
 import { useRouter as UseRouter } from "next/router";
 

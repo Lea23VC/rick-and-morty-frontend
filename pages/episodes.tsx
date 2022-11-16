@@ -5,7 +5,7 @@ import EPISODES_QUERY from "./../src/Graphql/Queries/Episodes.graphql";
 import client from "../apollo-client";
 import { ApolloQueryResult } from "@apollo/client";
 import MainTitle from "../src/components/home/mainTitle";
-import EpisodesView from "../src/components/home/episodesView";
+import EpisodesView from "../src/components/episodes/view/episodesView";
 import { GetStaticProps } from "next";
 
 import { pagination } from "../src/ts/types/info.types";

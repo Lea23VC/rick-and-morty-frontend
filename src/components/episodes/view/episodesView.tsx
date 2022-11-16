@@ -1,23 +1,26 @@
 import Container from "@mui/material/Container";
-import { characterInitialData } from "../../ts/types/character.types";
-import { pagination } from "../../ts/types/info.types";
+import { episodeInitialData } from "../../../ts/types/episode.types";
+import { pagination } from "../../../ts/types/info.types";
 import { useState as UseState, useEffect as UseEffect } from "react";
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
-import CHARACTER_QUERY from "../../Graphql/Queries/Characters.graphql";
-import ViewLayout from "../layouts/viewLayout";
+import EPISODES_QUERY from "../../../Graphql/Queries/Episodes.graphql";
+import ViewLayout from "../../layouts/viewLayout";
 import { useRouter as UseRouter } from "next/router";
-import CharactersGrid from "../../components/characters/charactersGrid";
+import EpisodesGrid from "../episodesGrid";
 
-type characterViewProps = {
-  characters: characterInitialData[];
+type episodesViewProps = {
+  episodes: episodeInitialData[];
   info: pagination;
 };
 
 export default function charactersView({
-  characters,
+  episodes,
   info,
-}: characterViewProps): JSX.Element {
+}: episodesViewProps): JSX.Element {
+  const [title, setTitle] = UseState("Episodes");
+
   const router = UseRouter();
+  console.log("ep info: ", info);
 
   const [paginationInfo, setPaginationInfo] = UseState(info);
 
@@ -33,42 +36,38 @@ export default function charactersView({
     if (!router.isReady) return;
 
     if (router.query.name) {
-      setTitle("Searching characters: " + router.query.name + "...");
+      setTitle("Searching episodes: " + router.query.name + "...");
     } else {
-      setTitle("Characters");
+      setTitle("Episodes");
     }
 
     setQueryVariables({ ...queryVariables, ...router.query });
   }, [router.isReady, router.query]);
 
-  const [currentCharacters, setCurrentCharacters] =
-    UseState<characterInitialData[]>(characters);
-
-  const [loadCharacters, { loading, error, called }] =
-    UseLazyQuery(CHARACTER_QUERY);
-
   const [page, setPage] = UseState(1);
 
-  const [title, setTitle] = UseState("Characters");
+  const [currentEpisodes, setCurrentEpisodes] = UseState(episodes);
+
+  const [loadEpisodes, { loading, error, called }] =
+    UseLazyQuery(EPISODES_QUERY);
 
   UseEffect(() => {
+    console.log("query variables: ", queryVariables);
     if (
       page != 1 ||
       called ||
       queryVariables.name ||
       Object.keys(router.query).length > 0
     )
-      loadCharacters({ variables: queryVariables }).then((data) => {
-        const results: characterInitialData[] = data.data.characters.results;
-        setCurrentCharacters(results);
-        setPaginationInfo(data.data.characters.info);
+      loadEpisodes({ variables: queryVariables }).then((data) => {
+        const results: episodeInitialData[] = data.data.episodes.results;
+        setCurrentEpisodes(results);
+        setPaginationInfo(data.data.episodes.info);
       });
   }, [queryVariables]);
 
   function searchByName(name: string): void {
-    setTitle(
-      name != "" ? "Searching characters: " + name + "..." : "Characters"
-    );
+    setTitle(name != "" ? "Searching episodes: " + name + "..." : "Episodes");
     setQueryVariables({ ...queryVariables, page: 1, name: name });
     setPage(1);
   }
@@ -81,15 +80,15 @@ export default function charactersView({
   return (
     <ViewLayout title={title} searchAction={searchByName}>
       <Container className="py-10">
-        <CharactersGrid
-          characters={currentCharacters}
+        <EpisodesGrid
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
+          episodes={currentEpisodes}
           info={paginationInfo}
-          onPagination={onPagination}
           loading={loading}
-          xs={6}
-          md={3}
-          lg={2}
-          spacing={{ xs: 0, sm: 3, md: 3 }}
+          onPagination={onPagination}
         />
       </Container>
     </ViewLayout>
