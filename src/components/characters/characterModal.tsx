@@ -1,17 +1,17 @@
 import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import { Container } from "@mui/material";
 import CHARACTER_QUERY from "../../Graphql/Queries/Character.graphql";
-
 import { useEffect as UseEffect, useState as UseState } from "react";
-
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 import { createCharacterInfoArray } from "../../utils/createCharacterInfoArray";
 import { character } from "../../ts/types/character.types";
 
 import CharacterContent from "../characters/characterModalContent";
+
+import ModalInfo from "../../components/layouts/modalLayout";
+import { episode } from "../../ts/types/episode.types";
 
 type modalProps = {
   open: boolean;
@@ -26,7 +26,9 @@ export default function characterModal({
 }: modalProps): JSX.Element {
   const [loadCharacter, { loading, called }] = UseLazyQuery(CHARACTER_QUERY);
 
-  const [characterData, setCharacterData] = UseState<character | undefined>();
+  const [characterData, setCharacterData] = UseState<
+    character | episode | undefined
+  >();
   UseEffect(() => {
     if (open && characterID) {
       loadCharacter({ variables: { id: characterID } })
@@ -41,24 +43,20 @@ export default function characterModal({
   }, [open]);
 
   return (
-    <Modal
-      open={open}
-      onClose={() => {
-        handleClose();
-        setCharacterData(undefined);
-      }}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box className="absolute top-1/2 left-1/2 w-[80%] sm:w-[400px] md:w-[800px] bg-transparent-black -translate-y-1/2 -translate-x-1/2 shadow-main border border-light-blue border-solid p-5 sm:p-10">
+    <>
+      <ModalInfo
+        open={open}
+        handleClose={handleClose}
+        setData={setCharacterData}
+      >
         {loading || !called || characterData == undefined ? (
           <Container className="flex justify-center">
             <CircularProgress />
           </Container>
         ) : (
-          <CharacterContent characterData={characterData} />
+          <CharacterContent characterData={characterData as character} />
         )}
-      </Box>
-    </Modal>
+      </ModalInfo>
+    </>
   );
 }
