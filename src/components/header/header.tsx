@@ -27,10 +27,17 @@ export default function header(): JSX.Element {
   const pathname = router.pathname;
 
   function search(searchQuery: string) {
-    router.push({
-      pathname: pathname,
-      query: { name: searchQuery },
-    });
+    if (pathname === "/") {
+      router.push({
+        pathname: "/favorites",
+        query: { name: searchQuery },
+      });
+    } else {
+      router.push({
+        pathname: pathname,
+        query: { name: searchQuery },
+      });
+    }
   }
 
   const SearchBarComponent = <SearchBar label="Search..." onClick={search} />;

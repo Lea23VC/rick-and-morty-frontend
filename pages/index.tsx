@@ -114,18 +114,20 @@ export default function Home({ characters, episodes }: homeProps): JSX.Element {
             {data.map((value, index) => (
               <Box key={index} className="pt-5 pb-20">
                 <Box className="py-4">
-                  <Typography
-                    id="title"
-                    className="font-eurostile font-bold text-2xl sm:text-3xl md:text-4xl text-left uppercase text-shadow-main text-white"
-                  >
-                    {value.title}
-                  </Typography>
+                  <Link href={value.url}>
+                    <Typography
+                      id="title"
+                      className="font-eurostile font-bold text-2xl sm:text-3xl md:text-4xl text-left uppercase text-shadow-main text-white"
+                    >
+                      {value.title}
+                    </Typography>
+                  </Link>
                 </Box>
                 <Box className="py-4">{value.element}</Box>
 
                 <Box className="py-4">
                   <Link href={value.url}>
-                    <Button label={`See more ${value.title}`} />
+                    <Button label={`See ${value.title}`} />
                   </Link>
                 </Box>
               </Box>

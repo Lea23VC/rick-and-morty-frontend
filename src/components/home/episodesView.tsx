@@ -17,6 +17,8 @@ export default function charactersView({
   episodes,
   info,
 }: episodesViewProps): JSX.Element {
+  const [title, setTitle] = UseState("Episodes");
+
   const router = UseRouter();
   console.log("ep info: ", info);
 
@@ -32,6 +34,13 @@ export default function charactersView({
 
   UseEffect(() => {
     if (!router.isReady) return;
+
+    if (router.query.name) {
+      setTitle("Searching episodes: " + router.query.name + "...");
+    } else {
+      setTitle("Episodes");
+    }
+
     setQueryVariables({ ...queryVariables, ...router.query });
   }, [router.isReady, router.query]);
 
@@ -58,6 +67,7 @@ export default function charactersView({
   }, [queryVariables]);
 
   function searchByName(name: string): void {
+    setTitle(name != "" ? "Searching episodes: " + name + "..." : "Episodes");
     setQueryVariables({ ...queryVariables, page: 1, name: name });
     setPage(1);
   }
@@ -68,7 +78,7 @@ export default function charactersView({
   }
 
   return (
-    <ViewLayout title="Episodes" searchAction={searchByName}>
+    <ViewLayout title={title} searchAction={searchByName}>
       <Container className="py-10">
         <EpisodesGrid
           xs={12}
