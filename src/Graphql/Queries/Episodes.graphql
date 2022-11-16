@@ -1,0 +1,15 @@
+
+#import "../Fragments/episodes/EpisodeFragment.graphql"
+query getEpisodes($page: Int = 1, $name: String, $episode: String, $withMoreData: Boolean = true, $withCharactersData: Boolean = false) {
+  episodes(page: $page, filter: {name: $name, episode: $episode}) {
+    info {
+      count
+      pages
+      next
+      prev
+    }
+    results {
+      ...EpisodeData
+    }
+  }
+}

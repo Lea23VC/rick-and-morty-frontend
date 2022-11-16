@@ -1,16 +1,16 @@
-query {
-  characters(page: 2, filter: { name: "rick" }) {
+
+#import "../Fragments/characters/CharacterFragment.graphql"
+query GetCharacters($page: Int = 1, $name: String, $withMoreData: Boolean = true) {
+  characters(page: $page, filter: { name: $name }) {
+    results {
+    ...CharacterData
+
+    }
     info {
       count
-    }
-    results {
-      name
-    }
-  }
-  location(id: 1) {
-    id
-  }
-  episodesByIds(ids: [1, 2]) {
-    id
+      pages
+      next
+      prev
+    } 
   }
 }

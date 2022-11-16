@@ -1,17 +1,35 @@
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { AppProps } from "next/app";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider, EmotionCache } from "@emotion/react";
 
-const client = new ApolloClient({
-  uri: "https://rickandmortyapi.com/graphql",
-  cache: new InMemoryCache(),
-});
+import { theme } from "../src/themes/mainThemeMUI";
+import { ApolloProvider } from "@apollo/client";
+import client from "../apollo-client";
+import Layout from "../src/components/layouts/mainLayout";
+import createEmotionCache from "../src/emotion/createEmotionCache";
 
-export default function App({ Component, pageProps }: AppProps) {
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
+
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache;
+}
+
+export default function App(props: MyAppProps) {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ApolloProvider client={client}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ApolloProvider>
+      </ThemeProvider>
+    </CacheProvider>
   );
 }

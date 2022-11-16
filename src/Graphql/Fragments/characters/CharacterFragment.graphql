@@ -1,0 +1,18 @@
+fragment CharacterData on Character {
+
+    id 
+    name 
+    status @include(if: $withMoreData)
+    species @include(if: $withMoreData)
+    type @include(if: $withMoreData)
+    gender @include(if: $withMoreData)
+    image 
+    origin @include(if: $withMoreData) {
+      name
+    }
+    location @include(if: $withMoreData) {
+      name
+    }
+  
+   
+}
