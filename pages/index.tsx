@@ -26,7 +26,7 @@ import Button from "../src/components/buttons/yellowButton";
 import Link from "next/link";
 import { episodeInitialData } from "../src/ts/types/episode.types";
 
-import { getLast } from "../src/utils/getLastFavorites";
+import LastFavorites from "../src/components/favorites/lastFavorites";
 
 type data = {
   results: characterInitialData[] | episodeInitialData[];
@@ -66,25 +66,35 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
-export default function Home({
-  characters,
-  queryInfo,
-  episodes,
-}: homeProps): JSX.Element {
-  const [lastFavoriteCharacter, lastFavoriteEpisode] = getLast();
-  console.log("test: ", lastFavoriteEpisode);
-
+export default function Home({ characters, episodes }: homeProps): JSX.Element {
   const data = [
     {
       title: "Characters",
-      element: <CharactersGrid characters={characters} xs={2} spacing={0} />,
+      element: (
+        <CharactersGrid characters={characters} xs={12} sm={4} md spacing={0} />
+      ),
       url: "/characters",
     },
 
     {
       title: "Episodes",
-      element: <EpisodesGrid episodes={episodes} xs={3} spacing={0} />,
+      element: (
+        <EpisodesGrid
+          episodes={episodes}
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
+          spacing={0}
+        />
+      ),
       url: "/episodes",
+    },
+
+    {
+      title: "Favorites",
+      element: <LastFavorites />,
+      url: "/favorites",
     },
   ];
 
@@ -97,80 +107,31 @@ export default function Home({
       </Head>
 
       <main className="min-h-screen max-w-screen-lg m-auto">
-        <Box className="pt-32"></Box>
-        <MainTitle />
+        <Box className="py-32">
+          <MainTitle />
 
-        <Container>
-          {data.map((value, index) => (
-            <Box key={index} className="pt-5 pb-20">
-              <Box className="py-4">
-                <Typography
-                  id="title"
-                  className="font-eurostile font-bold text-2xl sm:text-3xl md:text-4xl text-left uppercase text-shadow-main text-white"
-                >
-                  {value.title}
-                </Typography>
-              </Box>
-              <Box className="py-4">{value.element}</Box>
-
-              <Box>
-                <Link href={value.url}>
-                  <Button label={`See more ${value.title}`} />
-                </Link>
-              </Box>
-            </Box>
-          ))}
-          <Box className="py-4">
-            <Typography
-              id="title"
-              className="font-eurostile font-bold text-2xl sm:text-3xl md:text-4xl text-left uppercase text-shadow-main text-white"
-            >
-              Favorites
-            </Typography>
-          </Box>
-          <Grid container xs={12} spacing={2}>
-            <Box>
-              <Box>
-                <Box className="py-2">
+          <Container>
+            {data.map((value, index) => (
+              <Box key={index} className="pt-5 pb-20">
+                <Box className="py-4">
                   <Typography
-                    variant="h3"
-                    className="font-eurostile font-bold text-light-blue text-3xl pb-2"
+                    id="title"
+                    className="font-eurostile font-bold text-2xl sm:text-3xl md:text-4xl text-left uppercase text-shadow-main text-white"
                   >
-                    Last favorite character added
+                    {value.title}
                   </Typography>
                 </Box>
+                <Box className="py-4">{value.element}</Box>
 
-                <CharactersGrid
-                  characters={
-                    lastFavoriteCharacter?.name ? [lastFavoriteCharacter] : []
-                  }
-                  xs={6}
-                  spacing={0}
-                />
-              </Box>
-            </Box>
-            <Box>
-              <Box>
-                <Box className="py-2">
-                  <Typography
-                    variant="h3"
-                    className="font-eurostile font-bold text-light-blue text-3xl pb-2"
-                  >
-                    Last favorite episode added
-                  </Typography>
+                <Box className="py-4">
+                  <Link href={value.url}>
+                    <Button label={`See more ${value.title}`} />
+                  </Link>
                 </Box>
-
-                <EpisodesGrid
-                  episodes={
-                    lastFavoriteEpisode?.name ? [lastFavoriteEpisode] : []
-                  }
-                  xs={12}
-                  spacing={0}
-                />
               </Box>
-            </Box>
-          </Grid>
-        </Container>
+            ))}
+          </Container>
+        </Box>
       </main>
     </div>
   );

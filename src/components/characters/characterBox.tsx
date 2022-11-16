@@ -40,11 +40,11 @@ export default function characterBox({
           handleOpen();
         }}
       >
-        <Box className="relative w-[100%] aspect-square border border-light-blue border-solid shadow-main">
+        <Box className="relative aspect-square border border-light-blue border-solid shadow-main">
           <Image
             src={character.image}
             alt="img"
-            className="object-cover"
+            className="object-cover w-[100%]"
             fill
             sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,

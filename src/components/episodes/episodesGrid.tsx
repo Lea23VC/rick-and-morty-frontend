@@ -91,7 +91,7 @@ export default function episodesGrid({
         />
       </Grid>
       <Box>
-        {episodes.length == 0 && <MessageError message="No episodes..." />}
+        {episodes.length == 0 && <MessageError message="No characters..." />}
       </Box>
       {onPagination && info && (
         <Pagination

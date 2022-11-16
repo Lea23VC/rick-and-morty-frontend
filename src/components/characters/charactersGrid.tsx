@@ -45,8 +45,10 @@ export default function charactersGrid({
   loading = false,
   onPagination,
   xs,
+  sm,
   md,
   lg,
+
   spacing = 5,
   columnSpacing,
 }: charactersGridProp) {
@@ -65,6 +67,7 @@ export default function charactersGrid({
   const [page, setPage] = UseState(1);
   const gridOptions = {
     xs: xs,
+    sm: sm,
     md: md,
     lg: lg,
   };
