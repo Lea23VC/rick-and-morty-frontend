@@ -1,3 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Eurostile";
+  font-weight: 400;
+  font-style: normal;
+  src: local(""), url("/fonts/Eurostile/EuroStyleNormal.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Eurostile";
+  font-weight: 700;
+  font-style: normal;
+  src: local(""), url("/fonts/Eurostile/EurostileBold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Eurostile";
+  font-weight: 400;
+  font-style: italic;
+  src: local(""), url("/fonts/Eurostile/Eurostile-Oblique.woff") format("woff");
+}
+
 html,
 body {
   padding: 0;

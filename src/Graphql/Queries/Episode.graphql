@@ -1,0 +1,8 @@
+
+#import "../Fragments/episodes/EpisodeFragment.graphql"
+
+query GetEpisode($id: ID!, $withMoreData: Boolean = false, $withCharactersData: Boolean = true) {
+  episode(id: $id) {
+    ...EpisodeData
+  }
+}
