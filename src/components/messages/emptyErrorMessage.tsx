@@ -11,7 +11,7 @@ export default function emptyErrorMessage({ message }: messageProp) {
       <Typography
         variant="h1"
         gutterBottom
-        className="font-eurostile text-xl sm:text-2xl md:text-3xl text-center"
+        className="font-eurostile text-xl sm:text-2xl md:text-3xl text-center text-white"
       >
         {message}
       </Typography>

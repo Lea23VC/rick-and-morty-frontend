@@ -1,7 +1,5 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import { Container } from "@mui/material";

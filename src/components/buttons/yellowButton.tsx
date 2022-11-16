@@ -20,7 +20,7 @@ export default function yellowButton({
         sx={{ borderWith: "2px", borderColor: "#000" }}
       >
         <Typography
-          className="font-eurostile font-bold text-lg"
+          className="font-eurostile font-bold text-lg text-black  text-shadow-main "
           variant="button"
         >
           {label}

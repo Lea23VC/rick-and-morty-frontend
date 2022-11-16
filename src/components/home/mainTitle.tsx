@@ -20,7 +20,7 @@ export default function mainTitle(): JSX.Element {
         <Typography
           variant="h1"
           gutterBottom
-          className="font-eurostile text-xl sm:text-2xl md:text-3xl"
+          className="font-eurostile text-xl sm:text-2xl md:text-3xl text-white"
         >
           Your favorites characters and episodes!
         </Typography>
