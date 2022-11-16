@@ -21,30 +21,34 @@ import { graphqlResponse } from "../src/ts/types/info.types";
 //only the main title is not dynamic imported
 import dynamic from "next/dynamic";
 
-const CharactersGrid = dynamic(
-  () => import("../src/components/characters/charactersGrid"),
-  {
-    suspense: true,
-  }
-);
+import CharactersGrid from "../src/components/characters/charactersGrid";
+// const CharactersGrid = dynamic(
+//   () => import("../src/components/characters/charactersGrid"),
+//   {
+//     suspense: true,
+//   }
+// );
 
-const EpisodesGrid = dynamic(
-  () => import("../src/components/episodes/episodesGrid"),
-  {
-    suspense: true,
-  }
-);
+import EpisodesGrid from "../src/components/episodes/episodesGrid";
+// const EpisodesGrid = dynamic(
+//   () => import("../src/components/episodes/episodesGrid"),
+//   {
+//     suspense: true,
+//   }
+// );
+import Button from "../src/components/buttons/yellowButton";
 
-const Button = dynamic(() => import("../src/components/buttons/yellowButton"), {
-  suspense: true,
-});
+// const Button = dynamic(() => import("../src/components/buttons/yellowButton"), {
+//   suspense: true,
+// });
 
-const LastFavorites = dynamic(
-  () => import("../src/components/favorites/lastFavorites"),
-  {
-    suspense: true,
-  }
-);
+import LastFavorites from "../src/components/favorites/lastFavorites";
+// const LastFavorites = dynamic(
+//   () => import("../src/components/favorites/lastFavorites"),
+//   {
+//     suspense: true,
+//   }
+// );
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const characters: ApolloQueryResult<graphqlResponse> = await client.query({

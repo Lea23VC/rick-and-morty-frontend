@@ -84,14 +84,16 @@ export default function favoritesView() {
     );
 
     setCurrentEpisodes(
-      searchValuesinArray(searchValue, episodes) as SetStateAction<
-        episodeInitialData[]
-      >
+      searchValuesinArray(
+        searchValue.toLowerCase(),
+        episodes
+      ) as SetStateAction<episodeInitialData[]>
     );
     setCurrentCharacters(
-      searchValuesinArray(searchValue, characters) as SetStateAction<
-        characterInitialData[]
-      >
+      searchValuesinArray(
+        searchValue.toLowerCase(),
+        characters
+      ) as SetStateAction<characterInitialData[]>
     );
   }
 

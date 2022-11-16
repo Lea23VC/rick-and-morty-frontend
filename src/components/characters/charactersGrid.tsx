@@ -9,21 +9,21 @@ import { characterInitialData } from "../../ts/types/character.types";
 import { pagination } from "../../ts/types/info.types";
 import { useState as UseState } from "react";
 
-import CharacterModal from "../characters/characterModal";
-
 import MessageError from "../../components/messages/emptyErrorMessage";
 
-import Pagination from "../pagination/pagination";
+import dynamic from "next/dynamic";
+
+//dynamic imported modal
+const CharacterModal = dynamic(() => import("../characters/characterModal"), {
+  suspense: true,
+});
+
+//dynamic imported pagination
+const Pagination = dynamic(() => import("../pagination/pagination"), {
+  suspense: true,
+});
 
 type responsiveSizes = boolean | GridSize | undefined;
-
-type responsiveSpacing = {
-  xs?: responsiveSizes;
-  sm?: responsiveSizes;
-  md?: responsiveSizes;
-  lg?: responsiveSizes;
-  xl?: responsiveSizes;
-};
 
 type charactersGridProp = {
   characters: characterInitialData[];
