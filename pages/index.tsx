@@ -10,13 +10,12 @@ import { ApolloQueryResult } from "@apollo/client";
 import { GetStaticProps } from "next";
 import { Suspense } from "react";
 
-import { characterInitialData } from "../src/ts/types/character.types";
-import { episodeInitialData } from "../src/ts/types/episode.types";
-import { pagination } from "../src/ts/types/info.types";
-
 import Container from "@mui/material/Container";
 
 import MainTitle from "../src/components/home/mainTitle";
+
+import { homeProps } from "../src/ts/types/props.types";
+import { graphqlResponse } from "../src/ts/types/info.types";
 
 //dynamic imports
 //only the main title is not dynamic imported
@@ -46,25 +45,6 @@ const LastFavorites = dynamic(
     suspense: true,
   }
 );
-
-type data = {
-  results: characterInitialData[] | episodeInitialData[];
-  info: pagination;
-};
-
-type graphqlResponse = {
-  characters?: data;
-  episodes?: data;
-
-  loading: boolean;
-  network: number;
-};
-
-type homeProps = {
-  characters: characterInitialData[];
-  queryInfo: pagination;
-  episodes: episodeInitialData[];
-};
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const characters: ApolloQueryResult<graphqlResponse> = await client.query({
