@@ -7,9 +7,10 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Backdrop from "@mui/material/Backdrop";
 import { characterInitialData } from "../../ts/types/character.types";
 import { pagination } from "../../ts/types/info.types";
-import { useState as UseState } from "react";
+import { useEffect as UseEffect, useState as UseState } from "react";
 
 import MessageError from "../../components/messages/emptyErrorMessage";
+import { calculatePage } from "../../utils/calculatePage";
 
 import dynamic from "next/dynamic";
 
@@ -72,6 +73,12 @@ export default function charactersGrid({
     lg: lg,
   };
 
+  UseEffect(() => {
+    if (info) {
+      setPage(calculatePage(info.prev, info.next));
+    }
+  }, [characters]);
+
   return (
     <Box>
       <Backdrop
@@ -111,8 +118,6 @@ export default function charactersGrid({
           page={page}
           paginationInfo={info}
           onChange={(page) => {
-            setPage(page);
-
             onPagination(page);
           }}
         />

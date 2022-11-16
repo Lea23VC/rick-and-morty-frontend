@@ -11,14 +11,14 @@ import CharactersGrid from "../charactersGrid";
 type characterViewProps = {
   characters: characterInitialData[];
   info: pagination;
+  nameSearch?: string;
 };
 
 export default function charactersView({
   characters,
   info,
+  nameSearch,
 }: characterViewProps): JSX.Element {
-  const router = UseRouter();
-
   const [paginationInfo, setPaginationInfo] = UseState(info);
 
   const [queryVariables, setQueryVariables] = UseState<{
@@ -29,17 +29,17 @@ export default function charactersView({
     withMoreData: false,
   });
 
-  UseEffect(() => {
-    if (!router.isReady) return;
+  // UseEffect(() => {
+  //   if (!router.isReady) return;
 
-    if (router.query.name) {
-      setTitle("Searching characters: " + router.query.name + "...");
-    } else {
-      setTitle("Characters");
-    }
+  //   if (router.query.name) {
+  //     setTitle("Searching characters: " + router.query.name + "...");
+  //   } else {
+  //     setTitle("Characters");
+  //   }
 
-    setQueryVariables({ ...queryVariables, ...router.query });
-  }, [router.isReady, router.query]);
+  //   setQueryVariables({ ...queryVariables, ...router.query });
+  // }, [router.isReady, router.query]);
 
   const [currentCharacters, setCurrentCharacters] =
     UseState<characterInitialData[]>(characters);
@@ -49,14 +49,26 @@ export default function charactersView({
 
   const [page, setPage] = UseState(1);
 
-  const [title, setTitle] = UseState("Characters");
+  const [title, setTitle] = UseState(
+    nameSearch ? `Searching ${nameSearch}...` : "Characters"
+  );
+
+  const router = UseRouter();
+  UseEffect(() => {
+    setCurrentCharacters(characters);
+    setTitle(nameSearch ? `Searching ${nameSearch}...` : "Characters");
+  }, [characters]);
+  UseEffect(() => {
+    setPaginationInfo(info);
+    setPage(1);
+  }, [characters]);
 
   UseEffect(() => {
     if (
       page != 1 ||
       called ||
-      queryVariables.name ||
-      Object.keys(router.query).length > 0
+      queryVariables.name
+      // Object.keys(router.query).length > 0
     )
       loadCharacters({ variables: queryVariables }).then((data) => {
         const results: characterInitialData[] = data.data.characters.results;
@@ -69,12 +81,26 @@ export default function charactersView({
     setTitle(
       name != "" ? "Searching characters: " + name + "..." : "Characters"
     );
-    setQueryVariables({ ...queryVariables, page: 1, name: name });
+
+    router.push({
+      pathname: router.pathname,
+      query: {
+        ...queryVariables,
+
+        page: 1,
+        name: name,
+      },
+    });
+
     setPage(1);
   }
 
   function onPagination(page: number): void {
-    setQueryVariables({ ...queryVariables, page: page });
+    setQueryVariables({
+      ...queryVariables,
+      ...router.query,
+      page: page,
+    });
     setPage(2);
   }
 

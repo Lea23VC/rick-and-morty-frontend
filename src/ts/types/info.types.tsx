@@ -9,8 +9,8 @@ export type info = {
 export type pagination = {
   count: number;
   pages: number;
-  next?: number;
-  prev?: number;
+  next: number | null;
+  prev: number | null;
 };
 
 export type paginationInfoArray = {
