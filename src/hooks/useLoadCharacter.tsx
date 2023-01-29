@@ -1,8 +1,17 @@
+//modules
 import { useEffect as UseEffect, useState as UseState } from "react";
-import CHARACTER_QUERY from "../Graphql/Queries/Character.graphql";
+
+//hooks
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
-import { character, characterInitialData } from "../ts/types/character.types";
+
+//queries
+import CHARACTER_QUERY from "../Graphql/Queries/Character.graphql";
+
+//utils
 import { createCharacterInfoArray } from "../utils/createCharacterInfoArray";
+
+//types and interfaces
+import { character, characterInitialData } from "../ts/types/character.types";
 
 export function useLoadCharacter(
   open: boolean,

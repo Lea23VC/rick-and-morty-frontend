@@ -33,7 +33,7 @@ export type charactersGridProp = {
 export type modalProps = {
   open: boolean;
   handleClose: () => void;
-  characterID: number | undefined;
+  dataID: number | undefined;
 };
 
 export type characterViewProps = {
@@ -53,4 +53,33 @@ export type layoutProps = {
   children?: JSX.Element | null;
   searchAction: (name: string) => void;
   info?: pagination;
+};
+
+export type searchBarProps = {
+  onClick: (name: string) => void;
+
+  width?: number;
+  label: string;
+};
+
+export type episodesViewProps = {
+  episodes: episodeInitialData[];
+  info: pagination;
+};
+
+export type episodesGridProp = {
+  episodes: episodeInitialData[];
+  loading?: boolean;
+  xs?: boolean | GridSize | undefined;
+  sm?: boolean | GridSize | undefined;
+  md?: boolean | GridSize | undefined;
+  lg?: boolean | GridSize | undefined;
+  xl?: boolean | GridSize | undefined;
+  spacing?: ResponsiveStyleValue<GridSpacing> | undefined;
+};
+
+export type episodeBoxProps = {
+  episode: episodeInitialData;
+  handleOpen: () => void;
+  setCurrentEpisodeID: Dispatch<SetStateAction<number | undefined>>;
 };

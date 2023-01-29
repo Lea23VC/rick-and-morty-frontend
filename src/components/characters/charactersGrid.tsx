@@ -77,7 +77,7 @@ export default function charactersGrid({
       <CharacterModal
         open={open}
         handleClose={handleClose}
-        characterID={currentCharacterID}
+        dataID={currentCharacterID}
       />
     </Box>
   );

@@ -16,27 +16,23 @@ import { character } from "../../ts/types/character.types";
 export default function characterModal({
   open,
   handleClose,
-  characterID,
+  dataID,
 }: modalProps): JSX.Element {
-  const { characterData, loading, called } = UseLoadCharacter(
-    open,
-    characterID
-  );
+  const { characterData, loading, called } = UseLoadCharacter(open, dataID);
+
   return (
-    <>
-      <ModalInfo
-        open={open}
-        handleClose={handleClose}
-        // setData={setCharacterData}
-      >
-        {loading || !called || characterData == undefined ? (
-          <Container className="flex justify-center">
-            <CircularProgress />
-          </Container>
-        ) : (
-          <CharacterContent characterData={characterData as character} />
-        )}
-      </ModalInfo>
-    </>
+    <ModalInfo
+      open={open}
+      handleClose={handleClose}
+      // setData={setCharacterData}
+    >
+      {loading || !called || characterData == undefined ? (
+        <Container className="flex justify-center">
+          <CircularProgress />
+        </Container>
+      ) : (
+        <CharacterContent characterData={characterData as character} />
+      )}
+    </ModalInfo>
   );
 }

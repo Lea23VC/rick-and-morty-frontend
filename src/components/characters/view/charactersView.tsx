@@ -12,6 +12,7 @@ import { useRouter as UseRouter } from "next/router";
 
 //types and interfaces
 import { characterViewProps } from "../../../ts/types/props.types";
+import { searchByName } from "../../../utils/searchByName";
 
 export default function charactersView({
   characters,
@@ -19,15 +20,15 @@ export default function charactersView({
 }: characterViewProps): JSX.Element {
   const router = UseRouter();
   const [title, setTitle] = UseState("Characters");
-  function searchByName(name: string): void {
-    setTitle(name != "" ? `Searching characters: ${name}...` : "Characters");
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, name: name, page: 1 },
-    });
-  }
+
   return (
-    <ViewLayout title={title} searchAction={searchByName} info={info}>
+    <ViewLayout
+      title={title}
+      searchAction={(name) => {
+        searchByName(setTitle, name, "Characters", router);
+      }}
+      info={info}
+    >
       <CharactersGrid
         characters={characters}
         xs={6}
