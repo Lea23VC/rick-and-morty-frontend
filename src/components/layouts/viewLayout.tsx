@@ -1,36 +1,24 @@
+//MUI components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+
+//components
 import SearchBar from "../searchBar/searchBar";
-import { useEffect as UseEffect } from "react";
-import { useRouter as UseRouter } from "next/router";
+import Pagination from "../pagination/pagination";
 
-type layoutProps = {
-  title: string;
-  children?: JSX.Element | null;
-  searchAction: (name: string) => void;
-};
+//types and interfaces
+import { layoutProps } from "../../ts/types/props.types";
 
-export default function Layout({ children, searchAction, title }: layoutProps) {
-  const router = UseRouter();
+//utils
+import { searchLabel } from "../../utils/searchLabel";
 
-  UseEffect(() => {
-    if (!router.isReady) return;
-    const titleElement = document.getElementById("nav");
-  }, [router.isReady, router.query]);
-
-  function searchLabel(): string {
-    switch (title) {
-      case "Characters":
-        return "Enter a character name...";
-
-      case "Episodes":
-        return "Enter a episode name...";
-
-      default:
-        return "Search...";
-    }
-  }
-
+export default function Layout({
+  children,
+  searchAction,
+  title,
+  info,
+}: layoutProps) {
   return (
     <Box className="sm:py-4 md:py-8">
       <Box>
@@ -42,9 +30,12 @@ export default function Layout({ children, searchAction, title }: layoutProps) {
         </Typography>
       </Box>
       <Box className="p-4 bg-transparent-black m-4">
-        <SearchBar onClick={searchAction} label={searchLabel()} />
+        <SearchBar onClick={searchAction} label={searchLabel(title)} />
       </Box>
-      {children}
+      <Container className="py-10">
+        {children}
+        {info ? <Pagination info={info} /> : null}
+      </Container>
     </Box>
   );
 }

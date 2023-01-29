@@ -1,48 +1,28 @@
+//modules
+import { useEffect as UseEffect, useState as UseState } from "react";
+
+//MUI components
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { episode } from "../../ts/types/episode.types";
+
+//components
 import CharacterGrid from "../characters/charactersGrid";
-import { useEffect as UseEffect, useState as UseState } from "react";
 import Button from "../buttons/yellowButton";
 
-type episodeModalContentProps = {
-  episodeData: episode;
-};
+//hooks
+import { useCheckFavorite } from "../../hooks/favorites/useCheckFavorite";
 
-export default function episodeModalContent({
+//types and interfaces
+import { episode } from "../../ts/types/episode.types";
+import { addRemoveFavorite } from "../../utils/addRemoveFavorite";
+
+export default function EpisodeModalContent({
   episodeData,
-}: episodeModalContentProps) {
-  const [favorite, setFavorite] = UseState(false);
-  function addRemoveFavorite() {
-    if (typeof window !== "undefined") {
-      var episodes: string = localStorage.getItem("episodes") as string;
-      var values = episodes ? JSON.parse(episodes) : new Object();
-
-      console.log(values);
-
-      if (favorite) {
-        delete values[`${episodeData.id}`];
-      } else {
-        values[`${episodeData.id}`] = { id: episodeData.id, date: Date.now() };
-      }
-      localStorage.setItem("episodes", JSON.stringify(values));
-      setFavorite(!favorite);
-
-      // localStorage.removeItem("characters");
-    }
-  }
-
-  UseEffect(() => {
-    if (typeof window !== "undefined") {
-      var episodes: string = localStorage.getItem("episodes") as string;
-      var values = episodes ? JSON.parse(episodes) : new Object();
-
-      if (values[`${episodeData.id}`]) {
-        setFavorite(true);
-      }
-    }
-  }, []);
+}: {
+  episodeData: episode;
+}) {
+  const { favorite, setFavorite } = useCheckFavorite("episodes", episodeData);
 
   return (
     <Box>
@@ -88,7 +68,9 @@ export default function episodeModalContent({
       )}
       <Box className="pt-5">
         <Button
-          onClick={addRemoveFavorite}
+          onClick={() =>
+            addRemoveFavorite("episodes", favorite, episodeData, setFavorite)
+          }
           label={!favorite ? "Add to favorites" : "Remove from favorites"}
         />
       </Box>
