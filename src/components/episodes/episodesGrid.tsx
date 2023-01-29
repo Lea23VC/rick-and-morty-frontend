@@ -51,7 +51,7 @@ export default function episodesGrid({
   spacing,
 }: episodesGridProp) {
   const [currentEpisodeID, setCurrentEpisodeID] = UseState<
-    Number | undefined
+    number | undefined
   >();
 
   const [open, setOpen] = UseState(false);

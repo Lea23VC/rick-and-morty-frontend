@@ -1,46 +1,31 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+//modules
 import Image from "next/image";
-import Button from "../buttons/yellowButton";
-import { character } from "../../ts/types/character.types";
 import { useEffect as UseEffect, useState as UseState } from "react";
 
-type characterModalContent = {
-  characterData: character;
-};
+//MUI components
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+
+//components
+import Button from "../buttons/yellowButton";
+
+//types and interfaces
+import { character } from "../../ts/types/character.types";
+
+//utils
+import AddRemoveFavoriteCharacter from "../../utils/addRemoveFavoriteCharacter";
 
 export default function characterModalContent({
   characterData,
-}: characterModalContent): JSX.Element {
+}: {
+  characterData: character;
+}): JSX.Element {
   const [favorite, setFavorite] = UseState(false);
-
-  function addRemoveFavorite() {
-    if (typeof window !== "undefined") {
-      var characters: string = localStorage.getItem("characters") as string;
-      var values = characters ? JSON.parse(characters) : new Object();
-
-      console.log(values);
-
-      if (favorite) {
-        delete values[`${characterData.id}`];
-      } else {
-        values[`${characterData.id}`] = {
-          id: characterData.id,
-          date: Date.now(),
-        };
-      }
-      localStorage.setItem("characters", JSON.stringify(values));
-      setFavorite(!favorite);
-
-      // localStorage.removeItem("characters");
-    }
-  }
 
   UseEffect(() => {
     if (typeof window !== "undefined") {
       var characters: string = localStorage.getItem("characters") as string;
       var values = characters ? JSON.parse(characters) : new Object();
-
       if (values[`${characterData.id}`]) {
         setFavorite(true);
       }
@@ -89,7 +74,9 @@ export default function characterModalContent({
       </Box>
       <Box className="pt-5">
         <Button
-          onClick={addRemoveFavorite}
+          onClick={() =>
+            AddRemoveFavoriteCharacter(favorite, characterData, setFavorite)
+          }
           label={!favorite ? "Add to favorites" : "Remove from favorites"}
         />
       </Box>

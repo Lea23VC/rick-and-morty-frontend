@@ -15,7 +15,7 @@ import { character } from "../../ts/types/character.types";
 type modalProps = {
   open: boolean;
   handleClose: () => void;
-  episodeID: Number | undefined;
+  episodeID: number | undefined;
 };
 
 export default function characterModal({

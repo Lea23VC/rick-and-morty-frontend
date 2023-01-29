@@ -1,53 +1,33 @@
-import Box from "@mui/material/Box";
-
+//MUI components
 import CircularProgress from "@mui/material/CircularProgress";
-import { Container } from "@mui/material";
-import CHARACTER_QUERY from "../../Graphql/Queries/Character.graphql";
-import { useEffect as UseEffect, useState as UseState } from "react";
-import { useLazyQuery as UseLazyQuery } from "@apollo/client";
-import { createCharacterInfoArray } from "../../utils/createCharacterInfoArray";
-import { character } from "../../ts/types/character.types";
+import Container from "@mui/material/Container";
 
+//components
+import ModalInfo from "../../components/layouts/modalLayout";
 import CharacterContent from "../characters/characterModalContent";
 
-import ModalInfo from "../../components/layouts/modalLayout";
-import { episode } from "../../ts/types/episode.types";
+//hooks
+import { useLoadCharacter as UseLoadCharacter } from "../../hooks/useLoadCharacter";
 
-type modalProps = {
-  open: boolean;
-  handleClose: () => void;
-  characterID: Number | undefined;
-};
+//types and interfaces
+import { modalProps } from "../../ts/types/props.types";
+import { character } from "../../ts/types/character.types";
 
 export default function characterModal({
   open,
   handleClose,
   characterID,
 }: modalProps): JSX.Element {
-  const [loadCharacter, { loading, called }] = UseLazyQuery(CHARACTER_QUERY);
-
-  const [characterData, setCharacterData] = UseState<
-    character | episode | undefined
-  >();
-  UseEffect(() => {
-    if (open && characterID) {
-      loadCharacter({ variables: { id: characterID } })
-        .then(({ data }) => {
-          console.log(createCharacterInfoArray(data.character));
-          setCharacterData(createCharacterInfoArray(data.character));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [open]);
-
+  const { characterData, loading, called } = UseLoadCharacter(
+    open,
+    characterID
+  );
   return (
     <>
       <ModalInfo
         open={open}
         handleClose={handleClose}
-        setData={setCharacterData}
+        // setData={setCharacterData}
       >
         {loading || !called || characterData == undefined ? (
           <Container className="flex justify-center">

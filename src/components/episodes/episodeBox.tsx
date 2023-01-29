@@ -7,7 +7,7 @@ import { episodeInitialData } from "../../ts/types/episode.types";
 type episodeBoxProps = {
   episode: episodeInitialData;
   handleOpen?: () => void;
-  setCurrentEpisodeID?: Dispatch<SetStateAction<Number | undefined>>;
+  setCurrentEpisodeID?: Dispatch<SetStateAction<number | undefined>>;
 };
 
 export default function episodeBox({
