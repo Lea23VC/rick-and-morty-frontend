@@ -12,16 +12,11 @@ import { pageLayoutProps } from "../../ts/types/layouts.types";
 
 export default function PageLayout({ children, headTitle }: pageLayoutProps) {
   return (
-    <div className="bg-main bg-cover">
+    <div>
       <Head>
         <title>{headTitle}</title>
       </Head>
-      <main className="min-h-screen max-w-screen-lg m-auto">
-        <Box className="py-32">
-          <MainTitle />
-          {children}
-        </Box>
-      </main>
+      <main>{children}</main>
     </div>
   );
 }
