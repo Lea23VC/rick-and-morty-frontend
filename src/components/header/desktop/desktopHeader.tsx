@@ -53,7 +53,7 @@ export default function desktopHeader({
 
       <Box className="flex gap-6  items-center pl-4">
         {views.map((view, index) => (
-          <Link key={index} href={view.url}>
+          <Link key={index} href={view.url} scroll={false}>
             <Box>
               <Typography
                 className={`font-eurostile text-xs sm:text-sm md:text-md lg:text-lg  font-bold text-shadow-main text-white ${
