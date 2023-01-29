@@ -5,13 +5,16 @@ import { useEffect as UseEffect, useState as UseState } from "react";
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 
 //queries
-import CHARACTER_QUERY from "../Graphql/Queries/Character.graphql";
+import CHARACTER_QUERY from "../../../Graphql/Queries/Character.graphql";
 
 //utils
-import { createCharacterInfoArray } from "../utils/createCharacterInfoArray";
+import { createCharacterInfoArray } from "../../../utils/createCharacterInfoArray";
 
 //types and interfaces
-import { character, characterInitialData } from "../ts/types/character.types";
+import {
+  character,
+  characterInitialData,
+} from "../../../ts/types/character.types";
 
 export function useLoadCharacter(
   open: boolean,
@@ -36,5 +39,5 @@ export function useLoadCharacter(
     } else return setCharacterData(undefined);
   }, [data, open]);
 
-  return { characterData, loading, called };
+  return { characterData, loading, called, data };
 }

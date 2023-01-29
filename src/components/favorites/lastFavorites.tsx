@@ -5,10 +5,13 @@ import Grid from "@mui/material/Unstable_Grid2";
 import CharactersGrid from "../characters/charactersGrid";
 import EpisodesGrid from "../episodes/episodesGrid";
 import { getLast } from "../../utils/getLastFavorites";
+import { useLastFavorites } from "../../hooks/favorites/useLastFavorites";
 
-export default function lastFavorites() {
-  const [lastFavoriteCharacter, lastFavoriteEpisode] = getLast();
-  console.log("Last fav: ", lastFavoriteCharacter);
+export default function LastFavorites() {
+  const {
+    characterData: lastFavoriteCharacter,
+    episodeData: lastFavoriteEpisode,
+  } = useLastFavorites();
 
   const content = [
     {
@@ -16,7 +19,9 @@ export default function lastFavorites() {
       data: (
         <CharactersGrid
           characters={
-            lastFavoriteCharacter?.name ? [lastFavoriteCharacter] : []
+            lastFavoriteCharacter?.character.name
+              ? [lastFavoriteCharacter.character]
+              : []
           }
           xs
           spacing={0}
@@ -27,7 +32,11 @@ export default function lastFavorites() {
       title: "Last favorite episode added",
       data: (
         <EpisodesGrid
-          episodes={lastFavoriteEpisode?.name ? [lastFavoriteEpisode] : []}
+          episodes={
+            lastFavoriteEpisode?.episode.name
+              ? [lastFavoriteEpisode.episode]
+              : []
+          }
           xs
           spacing={0}
         />

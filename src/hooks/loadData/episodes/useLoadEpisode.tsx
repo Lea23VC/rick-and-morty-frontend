@@ -5,13 +5,13 @@ import { useEffect as UseEffect, useState as UseState } from "react";
 import { useLazyQuery as UseLazyQuery } from "@apollo/client";
 
 //queries
-import EPISODE_QUERY from "../Graphql/Queries/Episode.graphql";
+import EPISODE_QUERY from "../../../Graphql/Queries/Episode.graphql";
 
 //utils
-import { createEpisodeInfoArray } from "../utils/createEpisodeInfoArray";
+import { createEpisodeInfoArray } from "../../../utils/createEpisodeInfoArray";
 
 //types and interfaces
-import { episode, episodeInitialData } from "../ts/types/episode.types";
+import { episode, episodeInitialData } from "../../../ts/types/episode.types";
 
 export function useLoadEpisode(open: boolean, episodeID: number | undefined) {
   const [episodeData, setEpisodeData] = UseState<episode | undefined>(
@@ -33,5 +33,5 @@ export function useLoadEpisode(open: boolean, episodeID: number | undefined) {
     } else return setEpisodeData(undefined);
   }, [data, open]);
 
-  return { episodeData, loading, called };
+  return { episodeData, loading, called, data };
 }

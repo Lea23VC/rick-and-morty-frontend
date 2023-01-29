@@ -1,6 +1,5 @@
 //modules
 import Image from "next/image";
-import { useEffect as UseEffect, useState as UseState } from "react";
 
 //MUI components
 import Box from "@mui/material/Box";
@@ -9,28 +8,24 @@ import Typography from "@mui/material/Typography";
 //components
 import Button from "../buttons/yellowButton";
 
+//hooks
+import { useCheckFavorite } from "../../hooks/favorites/useCheckFavorite";
+
+//utils
+import { addRemoveFavorite } from "../../utils/addRemoveFavorite";
+
 //types and interfaces
 import { character } from "../../ts/types/character.types";
 
-//utils
-import AddRemoveFavoriteCharacter from "../../utils/addRemoveFavoriteCharacter";
-
-export default function characterModalContent({
+export default function CharacterModalContent({
   characterData,
 }: {
   characterData: character;
 }): JSX.Element {
-  const [favorite, setFavorite] = UseState(false);
-
-  UseEffect(() => {
-    if (typeof window !== "undefined") {
-      var characters: string = localStorage.getItem("characters") as string;
-      var values = characters ? JSON.parse(characters) : new Object();
-      if (values[`${characterData.id}`]) {
-        setFavorite(true);
-      }
-    }
-  }, []);
+  const { favorite, setFavorite } = useCheckFavorite(
+    "characters",
+    characterData
+  );
 
   return (
     <Box className="w-[100%]">
@@ -75,7 +70,12 @@ export default function characterModalContent({
       <Box className="pt-5">
         <Button
           onClick={() =>
-            AddRemoveFavoriteCharacter(favorite, characterData, setFavorite)
+            addRemoveFavorite(
+              "characters",
+              favorite,
+              characterData,
+              setFavorite
+            )
           }
           label={!favorite ? "Add to favorites" : "Remove from favorites"}
         />

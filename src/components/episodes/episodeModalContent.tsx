@@ -10,40 +10,19 @@ import Typography from "@mui/material/Typography";
 import CharacterGrid from "../characters/charactersGrid";
 import Button from "../buttons/yellowButton";
 
+//hooks
+import { useCheckFavorite } from "../../hooks/favorites/useCheckFavorite";
+
 //types and interfaces
 import { episode } from "../../ts/types/episode.types";
+import { addRemoveFavorite } from "../../utils/addRemoveFavorite";
 
-export default function episodeModalContent({
+export default function EpisodeModalContent({
   episodeData,
 }: {
   episodeData: episode;
 }) {
-  const [favorite, setFavorite] = UseState(false);
-  function addRemoveFavorite() {
-    if (typeof window !== "undefined") {
-      var episodes: string = localStorage.getItem("episodes") as string;
-      var values = episodes ? JSON.parse(episodes) : new Object();
-
-      if (favorite) {
-        delete values[`${episodeData.id}`];
-      } else {
-        values[`${episodeData.id}`] = { id: episodeData.id, date: Date.now() };
-      }
-      localStorage.setItem("episodes", JSON.stringify(values));
-      setFavorite(!favorite);
-    }
-  }
-
-  UseEffect(() => {
-    if (typeof window !== "undefined") {
-      var episodes: string = localStorage.getItem("episodes") as string;
-      var values = episodes ? JSON.parse(episodes) : new Object();
-
-      if (values[`${episodeData.id}`]) {
-        setFavorite(true);
-      }
-    }
-  }, []);
+  const { favorite, setFavorite } = useCheckFavorite("episodes", episodeData);
 
   return (
     <Box>
@@ -89,7 +68,9 @@ export default function episodeModalContent({
       )}
       <Box className="pt-5">
         <Button
-          onClick={addRemoveFavorite}
+          onClick={() =>
+            addRemoveFavorite("episodes", favorite, episodeData, setFavorite)
+          }
           label={!favorite ? "Add to favorites" : "Remove from favorites"}
         />
       </Box>

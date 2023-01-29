@@ -1,4 +1,5 @@
 import { characterInitialData } from "../types/character.types";
+import { episodeInitialData } from "../types/episode.types";
 import { pagination } from "../types/info.types";
 
 type graphqlResponse = {
@@ -6,9 +7,20 @@ type graphqlResponse = {
   networkStatus: number;
 };
 
+type dataInfo = {
+  info: pagination;
+};
+
+interface Icharacters extends dataInfo {
+  results: characterInitialData[];
+}
+interface IEpisodes extends dataInfo {
+  results: episodeInitialData[];
+}
+
 export interface charactersResponse extends graphqlResponse {
-  characters: {
-    results: characterInitialData[];
-    info: pagination;
-  };
+  characters: Icharacters;
+}
+export interface episodeResponse extends graphqlResponse {
+  episodes: IEpisodes;
 }

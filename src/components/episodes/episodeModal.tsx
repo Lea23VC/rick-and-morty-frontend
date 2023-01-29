@@ -9,7 +9,7 @@ import EpisodeModalContent from "../episodes/episodeModalContent";
 import InfoModal from "../layouts/modalLayout";
 
 //hooks
-import { useLoadEpisode as UseLoadEpisode } from "../../hooks/useLoadEpisode";
+import { useLoadEpisode as UseLoadEpisode } from "../../hooks/loadData/episodes/useLoadEpisode";
 
 //types and interfaces
 import { modalProps } from "../../ts/types/props.types";

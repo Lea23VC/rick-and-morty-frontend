@@ -7,7 +7,7 @@ import ModalInfo from "../../components/layouts/modalLayout";
 import CharacterContent from "../characters/characterModalContent";
 
 //hooks
-import { useLoadCharacter as UseLoadCharacter } from "../../hooks/useLoadCharacter";
+import { useLoadCharacter as UseLoadCharacter } from "../../hooks/loadData/characters/useLoadCharacter";
 
 //types and interfaces
 import { modalProps } from "../../ts/types/props.types";
