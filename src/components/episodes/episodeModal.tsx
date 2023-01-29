@@ -1,50 +1,29 @@
-import InfoModal from "../layouts/modalLayout";
+//MUI components
 import CircularProgress from "@mui/material/CircularProgress";
-import { Container } from "@mui/material";
-import EPISODE_QUERY from "../../Graphql/Queries/Episode.graphql";
-import { useLazyQuery as UseLazyQuery } from "@apollo/client";
-import { useEffect as UseEffect, useState as UseState } from "react";
+import Container from "@mui/material/Container";
 
-import { createEpisodeInfoArray } from "../../utils/createEpisodeInfoArray";
-
-import { episode } from "../../ts/types/episode.types";
-
+//components
 import EpisodeModalContent from "../episodes/episodeModalContent";
-import { character } from "../../ts/types/character.types";
 
-type modalProps = {
-  open: boolean;
-  handleClose: () => void;
-  episodeID: Number | undefined;
-};
+//layouts
+import InfoModal from "../layouts/modalLayout";
+
+//hooks
+import { useLoadEpisode as UseLoadEpisode } from "../../hooks/loadData/episodes/useLoadEpisode";
+
+//types and interfaces
+import { modalProps } from "../../ts/types/props.types";
+import { episode } from "../../ts/types/episode.types";
 
 export default function characterModal({
   open,
   handleClose,
-  episodeID,
+  dataID,
 }: modalProps): JSX.Element {
-  console.log("Character ID: ", episodeID);
-  const [loadEpisode, { loading, data, error, called, refetch }] =
-    UseLazyQuery(EPISODE_QUERY);
-
-  const [episodeData, setEpisodeData] = UseState<
-    episode | character | undefined
-  >();
-  UseEffect(() => {
-    if (open && episodeID) {
-      loadEpisode({ variables: { id: episodeID } })
-        .then(({ data }) => {
-          setEpisodeData(createEpisodeInfoArray(data.episode));
-          //   setCharacterData(createCharacterInfoArray(data.character));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [open]);
+  const { episodeData, loading, called } = UseLoadEpisode(open, dataID);
 
   return (
-    <InfoModal open={open} handleClose={handleClose} setData={setEpisodeData}>
+    <InfoModal open={open} handleClose={handleClose}>
       {loading || !called || episodeData == undefined ? (
         <Container className="flex justify-center">
           <CircularProgress />

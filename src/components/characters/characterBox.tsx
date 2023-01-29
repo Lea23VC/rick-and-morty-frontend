@@ -1,41 +1,23 @@
-import Box from "@mui/material/Box";
-import dynamic from "next/dynamic";
-
-import Typography from "@mui/material/Typography";
+//modules
 import Image from "next/image";
 
-import { character } from "../../ts/types/character.types";
-import { Dispatch, SetStateAction, useState as UseState } from "react";
+//MUI components
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
-type characterBoxProps = {
-  character: character;
-  handleOpen: () => void;
-  setCurrentCharacterID: Dispatch<SetStateAction<Number | undefined>>;
-};
+//types and interfaces
+import { characterBoxProps } from "../../ts/types/props.types";
 
 export default function characterBox({
   character,
   handleOpen,
   setCurrentCharacterID,
 }: characterBoxProps): JSX.Element {
-  const style = {
-    position: "absolute" as "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
-
   return (
     <Box>
       <Box
         className="cursor-pointer"
         onClick={() => {
-          console.log("char: ", character.id);
           setCurrentCharacterID(character.id);
           handleOpen();
         }}

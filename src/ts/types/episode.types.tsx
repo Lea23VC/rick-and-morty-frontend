@@ -3,14 +3,14 @@ import { character, characterInitialData } from "./character.types";
 
 export type episode = {
   name: string;
-  id: Number;
+  id: number;
   episode: string;
   info?: info[];
   characters?: characterInitialData[];
 };
 export type episodeInitialData = {
   __typename: string;
-  id: Number;
+  id: number;
   name: string;
   air_date: string;
   episode: string;

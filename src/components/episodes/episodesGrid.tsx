@@ -1,49 +1,31 @@
-import Box from "@mui/material/Box";
-import { ResponsiveStyleValue } from "@mui/system";
-import { GridSize, GridSpacing } from "@mui/material/Grid";
-import Grid from "@mui/material/Unstable_Grid2";
+//modules
+import { useState as UseState } from "react";
+import dynamic from "next/dynamic";
 
+//MUI components
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Unstable_Grid2";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
-import { pagination } from "../../ts/types/info.types";
-import { useState as UseState } from "react";
 
-import { episodeInitialData } from "../../ts/types/episode.types";
-
+//components
 import EpisodeBox from "../episodes/episodeBox";
-
 import MessageError from "../messages/emptyErrorMessage";
-
-import dynamic from "next/dynamic";
 
 //dynamic imported modal
 const EpisodeModal = dynamic(() => import("../episodes/episodeModal"), {
   suspense: true,
 });
 
-//dynamic imported pagination
-const Pagination = dynamic(() => import("../pagination/pagination"), {
-  suspense: true,
-});
+//utils
+import { gridOptions } from "../../utils/gridOptions";
 
-type episodesGridProp = {
-  episodes: episodeInitialData[];
-  info?: pagination;
-  loading?: boolean;
-  onPagination?: (page: number) => void;
-  xs?: boolean | GridSize | undefined;
-  sm?: boolean | GridSize | undefined;
-  md?: boolean | GridSize | undefined;
-  lg?: boolean | GridSize | undefined;
-  xl?: boolean | GridSize | undefined;
-  spacing?: ResponsiveStyleValue<GridSpacing> | undefined;
-};
+//types and interfaces
+import { episodesGridProp } from "../../ts/types/props.types";
 
 export default function episodesGrid({
   episodes,
-  info,
   loading = false,
-  onPagination,
   xs,
   sm,
   md,
@@ -51,7 +33,7 @@ export default function episodesGrid({
   spacing,
 }: episodesGridProp) {
   const [currentEpisodeID, setCurrentEpisodeID] = UseState<
-    Number | undefined
+    number | undefined
   >();
 
   const [open, setOpen] = UseState(false);
@@ -59,14 +41,6 @@ export default function episodesGrid({
   const handleClose = () => {
     setCurrentEpisodeID(undefined);
     setOpen(false);
-  };
-
-  const [page, setPage] = UseState(1);
-  const gridOptions = {
-    xs: xs,
-    sm: sm,
-    md: md,
-    lg: lg,
   };
 
   return (
@@ -81,7 +55,7 @@ export default function episodesGrid({
       <Grid container spacing={spacing} className="place-content-center ">
         {episodes.map((episode, index) => (
           <Grid
-            {...gridOptions}
+            {...gridOptions(xs, sm, md, lg)}
             key={index}
             className="relative border  border-light-blue border-solid shadow-main bg-transparent-black p-4 "
           >
@@ -95,23 +69,12 @@ export default function episodesGrid({
         <EpisodeModal
           open={open}
           handleClose={handleClose}
-          episodeID={currentEpisodeID}
+          dataID={currentEpisodeID}
         />
       </Grid>
       <Box>
         {episodes.length == 0 && <MessageError message="No episodes..." />}
       </Box>
-      {onPagination && info && (
-        <Pagination
-          page={page}
-          paginationInfo={info}
-          onChange={(page) => {
-            setPage(page);
-
-            onPagination(page);
-          }}
-        />
-      )}
     </Box>
   );
 }

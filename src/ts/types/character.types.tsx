@@ -4,13 +4,13 @@ import { info } from "./info.types";
 export type character = {
   name: string;
   image: string;
-  id: Number;
+  id: number;
   info?: info[];
 };
 
 export type characterInitialData = {
   __typename: string;
-  id: Number;
+  id: number;
   name: string;
   status: string;
   species: string;

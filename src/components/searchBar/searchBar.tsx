@@ -1,46 +1,17 @@
+//modules
 import { useState as UseState } from "react";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import TextField from "@mui/material/TextField";
-import { styled } from "@mui/material/styles";
+
+//MUI components
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  fontFamily: "Eurostile",
-  [`& #search-bar-label`]: {
-    fontFamily: "Eurostile",
-    fontSize: "20px",
-  },
+//styled MUI components
+import { StyledTextField } from "../styledMuiComponents/StyledTextField";
 
-  [`& input`]: {
-    fontFamily: "Eurostile",
-    fontSize: "20px",
-  },
-
-  [`& label.Mui-focused `]: {
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    padding: "0 5px 0",
-
-    fontSize: 20,
-    marginTop: "-10px !important",
-  },
-  [`& label.MuiFormLabel-filled `]: {
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    padding: "0 5px 0",
-
-    fontSize: 20,
-    marginTop: "-10px !important",
-    color: "#00ffea",
-  },
-}));
-
-type searchBarProps = {
-  onClick: (name: string) => void;
-
-  width?: number;
-  label: string;
-};
+//types and interface
+import { searchBarProps } from "../../ts/types/props.types";
 
 export default function searchBar({ onClick, width, label }: searchBarProps) {
   const [searchQuery, setSearchQuery] = UseState("");
@@ -53,11 +24,10 @@ export default function searchBar({ onClick, width, label }: searchBarProps) {
         id="search-bar"
         onInput={(e) => {
           const target = e.target as HTMLTextAreaElement;
-
           setSearchQuery(target.value);
         }}
         onKeyDown={(e) => {
-          if (e.keyCode == 13) onClick(searchQuery);
+          if (e.code == "Enter") onClick(searchQuery);
         }}
         label={label}
         variant="outlined"
@@ -81,7 +51,6 @@ export default function searchBar({ onClick, width, label }: searchBarProps) {
           aria-label="menu"
           sx={{ mr: 2 }}
           onClick={() => {
-            console.log("fdf");
             setSearchQuery("");
             onClick("");
           }}
